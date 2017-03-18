@@ -1,0 +1,23 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2008
+
+Project("{6EDB96E2-10D0-2E07-DB10-E47C251C351A}") = "Blockuza", "Assembly-CSharp.csproj", "{78A44836-B54F-F02F-7BB8-5AC560269CA1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{78A44836-B54F-F02F-7BB8-5AC560269CA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78A44836-B54F-F02F-7BB8-5AC560269CA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78A44836-B54F-F02F-7BB8-5AC560269CA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78A44836-B54F-F02F-7BB8-5AC560269CA1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Assembly-CSharp.csproj
+	EndGlobalSection
+EndGlobal

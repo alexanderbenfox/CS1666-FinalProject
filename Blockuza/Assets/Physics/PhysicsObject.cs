@@ -20,25 +20,28 @@ public class PhysicsObject : MonoBehaviour {
 		public float top;
 		public float bottom;
 
+		private Vector2 offset;
+
 		public Box(BoxCollider2D collider){
 			Transform t = collider.transform;
-			left = t.position.x - collider.size.x/2;
-			right = t.position.x + collider.size.x/2;
-			top = t.position.y + collider.size.y/2;
-			bottom = t.position.y - collider.size.y/2;
+			left = t.position.x - collider.size.x/2 + collider.offset.x;
+			right = t.position.x + collider.size.x/2 + collider.offset.x;
+			top = t.position.y + collider.size.y/2 + collider.offset.y;
+			bottom = t.position.y - collider.size.y/2 + collider.offset.y;
+			offset = collider.offset;
 		}
 
 		public float translateBottomCollision(float otherTop){
-			return Mathf.Abs(top - bottom) / 2 + otherTop;
+			return Mathf.Abs(top - bottom) / 2 + otherTop - offset.y;
 		}
 		public float translateRightCollision(float otherLeft){
-			return otherLeft - Mathf.Abs(right - left) / 2;
+			return otherLeft - Mathf.Abs(right - left) / 2 - offset.x;
 		}
 		public float translateTopCollision(float otherBottom){
-			return otherBottom - Mathf.Abs(top - bottom) / 2;
+			return otherBottom - Mathf.Abs(top - bottom) / 2 - offset.y;
 		}
 		public float translateLeftCollision(float otherRight){
-			return Mathf.Abs(right - left) / 2 + otherRight;
+			return Mathf.Abs(right - left) / 2 + otherRight - offset.x;
 		}
 	}
 
@@ -91,12 +94,12 @@ public class PhysicsObject : MonoBehaviour {
 			_top = true;
 			break;
 		case Side.RIGHT:
-			x = box.translateRightCollision (other.left)-.01f;
+			x = box.translateRightCollision (other.left)-.02f;
 			if(_dx >= 0) _dx = 0;
 			_right = true;
 			break;
 		case Side.LEFT:
-			x = box.translateLeftCollision (other.right)+.01f;
+			x = box.translateLeftCollision (other.right)+.02f;
 			if(_dx <= 0) _dx = 0;
 			_left = true;
 			break;

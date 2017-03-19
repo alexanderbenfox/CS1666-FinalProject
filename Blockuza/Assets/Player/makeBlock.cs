@@ -11,7 +11,7 @@ public class makeBlock : MonoBehaviour {
 	}
 	void Update(){
 		if (Input.GetMouseButtonDown (0)) {
-			if (controller.lastDirection == 0 || controller.lastDirection == 1) {
+			if (controller.lastDirection == Direction.NONE || controller.lastDirection == Direction.RIGHT) {
 				SpawnBlock (new Vector3 (gameObject.transform.position.x + .5f, gameObject.transform.position.y-.25f, 0));
 			} else {
 				SpawnBlock (new Vector3 (gameObject.transform.position.x -.5f, gameObject.transform.position.y-.25f, 0));

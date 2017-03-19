@@ -6,13 +6,22 @@ public enum Keys{
 	UP, DOWN, LEFT, RIGHT
 }
 
+public enum Direction{
+	UP, DOWN, LEFT, RIGHT, NONE
+}
+
 public class Controller : MonoBehaviour {
-	public int lastDirection = 0;//0 for no move, 1 for right, 2 for left used in destroyable block placement
+	public Direction lastDirection = Direction.NONE; //used in destroyable block placement
+
 	private PhysicsObject physics;
+	private Animator anim;
+	private SpriteRenderer sprite;
 
 	// Use this for initialization
 	void Start () {
-		physics = this.GetComponent<PhysicsObject> ();	
+		physics = this.GetComponent<PhysicsObject> ();
+		anim = this.GetComponent<Animator> ();
+		sprite = this.GetComponent<SpriteRenderer> ();
 	}
 
 	List<Keys> getKeyInput(){
@@ -43,14 +52,21 @@ public class Controller : MonoBehaviour {
 		float y = 0;
 		if (heldKeys.Contains (Keys.LEFT)) {
 			x = -1;
-			lastDirection = 2;
+			sprite.flipX = true;
+			lastDirection = Direction.LEFT;
 		}
 		if (heldKeys.Contains (Keys.RIGHT)) {
 			x = 1;
-			lastDirection = 1;
+			sprite.flipX = false;
+			lastDirection = Direction.RIGHT;
 		}
 		if (heldKeys.Contains (Keys.UP) && physics.checkGrounded())
 			y = 5;
+
+		if (x == 0)
+			anim.Play ("Idle");
+		else
+			anim.Play ("Run");
 
 		physics.Move (x, y);
 	}

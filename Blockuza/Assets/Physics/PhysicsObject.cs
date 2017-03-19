@@ -69,10 +69,9 @@ public class PhysicsObject : MonoBehaviour {
 			if (overlaps[i] < minValue)
 				minValue = overlaps[i];
 		}
-
+		if (minValue == Mathf.Abs(overlapBottom)) return Side.BOTTOM;
 		if (minValue == Mathf.Abs(overlapRight)) return Side.RIGHT;
 		if (minValue == Mathf.Abs(overlapLeft)) return Side.LEFT;
-		if (minValue == Mathf.Abs(overlapBottom)) return Side.BOTTOM;
 		if (minValue == Mathf.Abs(overlapTop)) return Side.TOP;
 
 		return Side.NONE;

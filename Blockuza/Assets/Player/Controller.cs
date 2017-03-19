@@ -7,6 +7,7 @@ public enum Keys{
 }
 
 public class Controller : MonoBehaviour {
+	public int lastDirection = 0;//0 for no move, 1 for right, 2 for left used in destroyable block placement
 	private PhysicsObject physics;
 
 	// Use this for initialization
@@ -40,10 +41,14 @@ public class Controller : MonoBehaviour {
 	public void Move(List<Keys> heldKeys){
 		float x = 0;
 		float y = 0;
-		if (heldKeys.Contains (Keys.LEFT))
+		if (heldKeys.Contains (Keys.LEFT)) {
 			x = -1;
-		if (heldKeys.Contains (Keys.RIGHT))
+			lastDirection = 2;
+		}
+		if (heldKeys.Contains (Keys.RIGHT)) {
 			x = 1;
+			lastDirection = 1;
+		}
 		if (heldKeys.Contains (Keys.UP) && physics.checkGrounded())
 			y = 5;
 

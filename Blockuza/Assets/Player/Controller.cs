@@ -32,7 +32,7 @@ public class Controller : MonoBehaviour {
 		if (Input.GetKey (KeyCode.RightArrow)) {
 			heldKeys.Add (Keys.RIGHT);
 		}
-		if (Input.GetKey (KeyCode.UpArrow)) {
+		if (Input.GetKeyDown (KeyCode.UpArrow)) {
 			heldKeys.Add (Keys.UP);
 		}
 		if (Input.GetKey (KeyCode.DownArrow)) {

@@ -5,7 +5,9 @@ using UnityEngine;
 [ExecuteInEditMode]
 public class SnapToGrid : MonoBehaviour {
 	public float snapValue = 1;
-	public float depth = 0;    
+	public float depth = 0;  
+
+	public bool snapped = false;
 
 	void Update() {
 		float snapInverse = 1/snapValue;
@@ -19,5 +21,6 @@ public class SnapToGrid : MonoBehaviour {
 		z = depth;  // depth from camera
 
 		transform.position = new Vector3(x, y, z);
+		snapped = true;
 	}
 }

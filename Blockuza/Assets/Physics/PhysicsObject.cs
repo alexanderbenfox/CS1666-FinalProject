@@ -46,12 +46,18 @@ public class PhysicsObject : MonoBehaviour {
 	}
 
 	private BoxCollider2D col;
+	[SerializeField]
 	private Box box;
 	private Transform trans;
 
+	[SerializeField]
 	private bool _grounded, _right, _left, _top;
+	private bool _collisionThisFrame, _collisionLastFrame;
 
+	[SerializeField]
 	private float _dx, _dy;
+
+	public bool effectedByGravity;
 
 	public LayerMask collidableLayer;
 
@@ -70,9 +76,9 @@ public class PhysicsObject : MonoBehaviour {
 				minValue = overlaps[i];
 		}
 		if (minValue == Mathf.Abs(overlapBottom)) return Side.BOTTOM;
-		if (minValue == Mathf.Abs(overlapRight)) return Side.RIGHT;
-		if (minValue == Mathf.Abs(overlapLeft)) return Side.LEFT;
-		if (minValue == Mathf.Abs(overlapTop)) return Side.TOP;
+		if (minValue == Mathf.Abs(overlapRight) && _dx > 0) return Side.RIGHT;
+		if (minValue == Mathf.Abs(overlapLeft) && _dx < 0) return Side.LEFT;
+		if (minValue == Mathf.Abs(overlapTop) && _dy > 0) return Side.TOP;
 
 		return Side.NONE;
 	}
@@ -93,14 +99,20 @@ public class PhysicsObject : MonoBehaviour {
 			_top = true;
 			break;
 		case Side.RIGHT:
-			x = box.translateRightCollision (other.left)-.02f;
-			if(_dx >= 0) _dx = 0;
 			_right = true;
+			x = box.translateRightCollision (other.left);
+			if (_dx >= 0) {}
+				//_dx = 0;
+			else
+				_right = false;
 			break;
 		case Side.LEFT:
-			x = box.translateLeftCollision (other.right)+.02f;
-			if(_dx <= 0) _dx = 0;
 			_left = true;
+			x = box.translateLeftCollision (other.right);
+			if (_dx <= 0){}
+				//_dx = 0;
+			else
+				_left = false;
 			break;
 		default:
 			break;
@@ -129,7 +141,8 @@ public class PhysicsObject : MonoBehaviour {
 	}
 
 	void OnTriggerStay2D(Collider2D col){
-		if (col.gameObject.layer == LayerMask.NameToLayer("CollisionLayer")) {
+		if (((1<<col.gameObject.layer) & collidableLayer) != 0) {
+			_collisionThisFrame = true;
 			Box collisionBox = new Box (col.gameObject.GetComponent<BoxCollider2D>());
 			Side collisionSide = getCollisionSide (collisionBox);
 			handleCollision (collisionSide, collisionBox);
@@ -137,7 +150,7 @@ public class PhysicsObject : MonoBehaviour {
 	}
 
 	void OnTriggerExit2D(Collider2D col){
-		if (col.gameObject.layer == LayerMask.NameToLayer("CollisionLayer")) {
+		if (((1<<col.gameObject.layer) & collidableLayer) != 0) {
 			Debug.Log ("here");
 			Box collisionBox = new Box (col.gameObject.GetComponent<BoxCollider2D>());
 			Side collisionSide = getCollisionSide (collisionBox);
@@ -147,6 +160,10 @@ public class PhysicsObject : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		Rigidbody2D rigidbody = this.GetComponent<Rigidbody2D> ();
+		rigidbody.gravityScale = 0;
+		rigidbody.mass = 0;
+		rigidbody.velocity = new Vector2 (0, 0);
 		trans = this.GetComponent<Transform> ();
 		col = this.GetComponent<BoxCollider2D>();
 		box = new Box(col);
@@ -155,16 +172,20 @@ public class PhysicsObject : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
+		if (!_collisionThisFrame && !_collisionLastFrame) 
+			_grounded = false; _left = false; _right = false; _top = false;
 		float x = trans.position.x;
 		float y = trans.position.y;
 
-		if(!_grounded)
+		if(!_grounded && effectedByGravity)
 			_dy -= (9.8f * Time.deltaTime);
 		
 		box = new Box (col);
 		x += (_dx * Time.deltaTime);
 		y += (_dy * Time.deltaTime);
 		trans.position = new Vector2 (x, y);
+		_collisionLastFrame = _collisionThisFrame;
+		_collisionThisFrame = false;
 	}
 
 	public void Move(float x, float y){

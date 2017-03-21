@@ -5,16 +5,19 @@ using UnityEngine;
 public class makeBlock : MonoBehaviour {
 	public GameObject DestroyBlockPrefab;
 	public Controller controller;
+	private TileSelector selector;
+
 	// Use this for initialization
 	void Start(){
 		controller= gameObject.GetComponent<Controller>();
+		selector = this.GetComponentInChildren<TileSelector> ();
 	}
 	void Update(){
-		if (Input.GetMouseButtonDown (0)) {
-			if (controller.lastDirection == Direction.NONE || controller.lastDirection == Direction.RIGHT) {
-				SpawnBlock (new Vector3 (gameObject.transform.position.x + .5f, gameObject.transform.position.y-.25f, 0));
+		if (controller.checkKeyPressed (Keys.ACTION)) {
+			if (selector.consume) {
+				selector.consumeBlock ();
 			} else {
-				SpawnBlock (new Vector3 (gameObject.transform.position.x -.5f, gameObject.transform.position.y-.25f, 0));
+				SpawnBlock (selector.transform.position);
 			}
 		}
 	}

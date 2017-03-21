@@ -14,7 +14,7 @@ enum Side{
 
 public class PhysicsObject : MonoBehaviour {
 
-	class Box{
+	public class Box{
 		public float left;
 		public float right;
 		public float top;
@@ -47,7 +47,7 @@ public class PhysicsObject : MonoBehaviour {
 
 	private BoxCollider2D col;
 	[SerializeField]
-	private Box box;
+	public Box box;
 	private Transform trans;
 
 	[SerializeField]

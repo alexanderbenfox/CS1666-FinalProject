@@ -3,64 +3,104 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum Keys{
-	UP, DOWN, LEFT, RIGHT
+	UP, DOWN, LEFT, RIGHT, JUMP, ACTION
 }
 
 public enum Direction{
-	UP, DOWN, LEFT, RIGHT, NONE
+	UP, DOWN, LEFT, RIGHT, UP_RIGHT, DOWN_RIGHT, UP_LEFT, DOWN_LEFT, NONE
 }
 
 public class Controller : MonoBehaviour {
-	public Direction lastDirection = Direction.NONE; //used in destroyable block placement
+	public Direction lastDirection = Direction.RIGHT; //used in destroyable block placement
 
 	private PhysicsObject physics;
 	private Animator anim;
 	private SpriteRenderer sprite;
+	private InputControl input;
+	public ControlType control;
+
+	[SerializeField]
+	private Direction direction;
 
 	// Use this for initialization
 	void Start () {
 		physics = this.GetComponent<PhysicsObject> ();
 		anim = this.GetComponent<Animator> ();
 		sprite = this.GetComponent<SpriteRenderer> ();
+		input = new InputControl ();
+		input.setControlType (control);
 	}
 
-	List<Keys> getKeyInput(){
-		List<Keys> heldKeys = new List<Keys>();
-		if (Input.GetKey (KeyCode.LeftArrow)) {
-			heldKeys.Add (Keys.LEFT);
+	public bool checkKeyPressed(Keys k){
+		return input.keysPressed.Contains (k);
+	}
+
+	public bool checkKeyHeld(Keys k){
+		return input.keysHeld.Contains (k);
+	}
+
+	public bool checkKeyReleased(Keys k){
+		return input.keysReleased.Contains (k);
+	}
+
+	public PhysicsObject getCollider(){
+		return physics;
+	}
+
+	private bool checkInput(Keys a, Keys b){
+		return input.keysHeld.Contains (a) && input.keysHeld.Contains (b);
+	}
+
+	public Direction getCursorDirection(){
+		if (input.control == ControlType.Keyboard) {
+			
+			if (checkInput(Keys.RIGHT,Keys.UP))
+				return Direction.UP_RIGHT;
+			if (checkInput (Keys.RIGHT, Keys.DOWN))
+				return Direction.DOWN_RIGHT;
+			if (checkInput (Keys.LEFT, Keys.UP))
+				return Direction.UP_LEFT;
+			if (checkInput (Keys.LEFT, Keys.DOWN))
+				return Direction.DOWN_LEFT;
+			if (input.keysHeld.Contains (Keys.LEFT))
+				return Direction.LEFT;
+			if (input.keysHeld.Contains (Keys.RIGHT))
+				return Direction.RIGHT;
+			if (input.keysHeld.Contains (Keys.UP))
+				return Direction.UP;
+			if (input.keysHeld.Contains (Keys.DOWN))
+				return Direction.DOWN;
+			
+		} else if (input.control == ControlType.MouseAndKeyboard) {
+			return Direction.RIGHT;
 		}
-		if (Input.GetKey (KeyCode.RightArrow)) {
-			heldKeys.Add (Keys.RIGHT);
-		}
-		if (Input.GetKeyDown (KeyCode.UpArrow)) {
-			heldKeys.Add (Keys.UP);
-		}
-		if (Input.GetKey (KeyCode.DownArrow)) {
-			heldKeys.Add (Keys.DOWN);
-		}
-		return heldKeys;
+		return direction;
+		
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		List<Keys> heldKeys = getKeyInput ();
-		Move (heldKeys);
+		input.updateKeys ();
+		if (getCursorDirection () != Direction.NONE) {
+			direction = getCursorDirection ();
+		}
+		Move ();
 	}
 
-	public void Move(List<Keys> heldKeys){
+	public void Move(){
 		float x = 0;
 		float y = 0;
-		if (heldKeys.Contains (Keys.LEFT)) {
+		if (input.keysHeld.Contains (Keys.LEFT)) {
 			x = -1;
 			sprite.flipX = true;
 			lastDirection = Direction.LEFT;
 		}
-		if (heldKeys.Contains (Keys.RIGHT)) {
+		if (input.keysHeld.Contains (Keys.RIGHT)) {
 			x = 1;
 			sprite.flipX = false;
 			lastDirection = Direction.RIGHT;
 		}
-		if (heldKeys.Contains (Keys.UP) && physics.checkGrounded())
+		if (input.keysPressed.Contains (Keys.JUMP) && physics.checkGrounded())
 			y = 5;
 
 		if (x == 0)

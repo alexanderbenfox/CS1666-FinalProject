@@ -21,19 +21,32 @@ public class SlidingBlock : MonoBehaviour {
 			direction = 1;
 		}
 	}
-	void FixedUpdate () {
+	void Start(){
 		snap.enabled = false;
+	}
+	void FixedUpdate () {
+		
 		if (gameObject.transform.position.x >= (initialPosition.x + (direction * slideDistance))) {
 			moving = false;
+
 		}
-		if (gameObject.GetComponent<PhysicsObject> ().checkRightCollision ()&&direction==1) {
-			Debug.Log ("Right Collision");
-			moving = false;
-		}
-		if(gameObject.GetComponent<PhysicsObject>().checkLeftCollision()&&direction==-1)
-			Debug.Log ("Left Collision");
+
 		if (moving) {
-			gameObject.transform.position = new Vector3 (gameObject.transform.position.x + speed * direction * Time.deltaTime, gameObject.transform.position.y, 0);
+			gameObject.GetComponent<PhysicsObject> ().Move (initialPosition.x + (direction * slideDistance*speed), gameObject.transform.position.y);
+			if (gameObject.GetComponent<PhysicsObject> ().checkRightCollision()) {
+				Debug.Log ("Right Collision");
+				moving = false;
+
+
+			}
+			if (gameObject.GetComponent<PhysicsObject> ().checkLeftCollision () && direction == -1) {
+				Debug.Log ("Left Collision");
+				moving = false;
+
+
+			}
+		} else {
+			gameObject.GetComponent<PhysicsObject> ().Move (0, 0);
 		}
 	}
 }

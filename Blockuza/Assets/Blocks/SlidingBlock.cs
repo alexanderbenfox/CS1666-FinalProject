@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SlidingBlock : MonoBehaviour {
-
-	private SnapToGrid snap;
+public class SlidingBlock : BlockBehaviour {
 	private Vector3 initialPosition;
 	public float speed;
 	public float slideDistance;
@@ -13,6 +11,7 @@ public class SlidingBlock : MonoBehaviour {
 	public bool moving = true;
 	void Awake(){
 		player = GameObject.FindGameObjectWithTag ("Player");
+		type = BlockType.Sliding;
 		snap = this.GetComponent<SnapToGrid> ();
 		initialPosition = gameObject.transform.position;
 		if (player.GetComponent<Controller> ().getCursorDirection () == Direction.LEFT || player.GetComponent<Controller> ().getCursorDirection () == Direction.DOWN_LEFT || player.GetComponent<Controller> ().getCursorDirection () == Direction.UP_LEFT) {
@@ -20,19 +19,26 @@ public class SlidingBlock : MonoBehaviour {
 		} else {
 			direction = 1;
 		}
+		if (this.gameObject.GetComponent<PhysicsObject> () != null) {
+			physics = this.gameObject.GetComponent<PhysicsObject> ();
+		}
 	}
 	void Start(){
 		snap.enabled = false;
 	}
-	void FixedUpdate () {
+	void Update () {
 		
 		if (gameObject.transform.position.x >= (initialPosition.x + (direction * slideDistance))) {
 			moving = false;
 
 		}
 
+		if (physics.checkRightCollision ()) {
+			moving = false;
+		}
+
 		if (moving) {
-			gameObject.GetComponent<PhysicsObject> ().Move (initialPosition.x + (direction * slideDistance*speed), gameObject.transform.position.y);
+			gameObject.GetComponent<PhysicsObject> ().Move (initialPosition.x + (direction * slideDistance*speed), 0);
 			if (gameObject.GetComponent<PhysicsObject> ().checkRightCollision()) {
 				Debug.Log ("Right Collision");
 				moving = false;

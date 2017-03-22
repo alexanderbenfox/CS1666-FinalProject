@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class makeBlock : MonoBehaviour {
-	public GameObject DestroyBlockPrefab;
+	public GameObject DestroyBlockPrefab,SlideBlockPrefab;
 	public Controller controller;
 	private TileSelector selector;
 
@@ -22,6 +22,10 @@ public class makeBlock : MonoBehaviour {
 		}
 	}
 	public void SpawnBlock(Vector3 position){
-		GameObject blockInst = Instantiate (DestroyBlockPrefab,position,gameObject.transform.rotation);
+		if (selector.queuedBlock == BlockType.Sliding) {
+			GameObject blockInst = Instantiate (SlideBlockPrefab, position, gameObject.transform.rotation);
+		} else {
+			GameObject blockInst = Instantiate (DestroyBlockPrefab, position, gameObject.transform.rotation);
+		}
 	}
 }

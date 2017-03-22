@@ -9,7 +9,9 @@ public class TileSelector : MonoBehaviour {
 	public LayerMask blockLayer;
 	public bool consume;
 
-	private BlockBehavior savedBlock;
+	public BlockBehaviour savedBlock;
+
+	public BlockType queuedBlock;
 
 	// Use this for initialization
 	void Start () {
@@ -63,14 +65,16 @@ public class TileSelector : MonoBehaviour {
 
 	void OnTriggerStay2D(Collider2D col){
 		if (((1 << col.gameObject.layer) & blockLayer) != 0) {
-			savedBlock = col.gameObject.GetComponent<BlockBehavior> ();
+			savedBlock = col.gameObject.GetComponent<BlockBehaviour> ();
 			consume = true;
 		}
 	}
 
 	public void consumeBlock(){
 		if (savedBlock != null) {
+			queuedBlock = savedBlock.getType ();
 			Destroy (savedBlock.gameObject);
+			savedBlock = null;
 		}
 	}
 	

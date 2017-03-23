@@ -23,7 +23,7 @@ public class roomGeneration : MonoBehaviour {
 	void Generate() 
 	{
 		GameObject currentSection = sections[0];
-		System.Random rand = new System.Random();
+		System.Random rand = new System.Random(2);
 
 		for (int i = 0; i < sectionsWide; i++)
 		{

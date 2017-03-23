@@ -9,6 +9,7 @@ public class SlidingBlock : BlockBehaviour {
 	public int direction;
 	public GameObject player;
 	public bool moving = true;
+	public bool moving2=true;
 	void Awake(){
 		player = GameObject.FindGameObjectWithTag ("Player");
 		type = BlockType.Sliding;
@@ -28,18 +29,21 @@ public class SlidingBlock : BlockBehaviour {
 	}
 	void Update () {
 		
-		if (gameObject.transform.position.x >= (initialPosition.x + (direction * slideDistance))) {
+		if (gameObject.transform.position.x >= (initialPosition.x + (direction * slideDistance))&& direction==1) {
 			moving = false;
+			moving2 = false;
+			Debug.Log ("Full Distance");
 
 		}
-
-		if (physics.checkRightCollision ()) {
+		if (gameObject.transform.position.x <= (initialPosition.x + (direction * slideDistance)) && direction == -1) {
 			moving = false;
+			moving2 = false;
+			Debug.Log ("Full Distance");
 		}
 
 		if (moving) {
-			gameObject.GetComponent<PhysicsObject> ().Move (initialPosition.x + (direction * slideDistance*speed), 0);
-			if (gameObject.GetComponent<PhysicsObject> ().checkRightCollision()) {
+			gameObject.GetComponent<PhysicsObject> ().Move (initialPosition.x + (direction * slideDistance * speed), 0);
+			if (gameObject.GetComponent<PhysicsObject> ().checkRightCollision ()&&direction ==1) {
 				Debug.Log ("Right Collision");
 				moving = false;
 
@@ -51,7 +55,22 @@ public class SlidingBlock : BlockBehaviour {
 
 
 			}
-		} else {
+		} else if (!moving && moving2) {
+			gameObject.GetComponent<PhysicsObject> ().Move (initialPosition.x + (direction * slideDistance * speed), 0);
+			if (gameObject.GetComponent<PhysicsObject> ().checkRightCollision () && direction == 1) {
+				Debug.Log ("Right Collision 2");
+				moving2 = false;
+
+
+			} else if (gameObject.GetComponent<PhysicsObject> ().checkLeftCollision () && direction == -1) {
+				Debug.Log ("Left Collision 2");
+				moving2 = false;
+
+
+			} else {
+				moving = true;
+			}
+		}else {
 			gameObject.GetComponent<PhysicsObject> ().Move (0, 0);
 		}
 	}

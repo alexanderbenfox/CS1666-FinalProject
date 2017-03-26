@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum BlockType{
-	Destroyable, Sliding
+	Destroyable, Sliding, Sticky
 };
 
 public class BlockBehaviour : MonoBehaviour {

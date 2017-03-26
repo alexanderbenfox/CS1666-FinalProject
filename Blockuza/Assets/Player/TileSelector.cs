@@ -8,13 +8,13 @@ public class TileSelector : MonoBehaviour {
 	private float snapValue = .32f;
 	public LayerMask blockLayer;
 	public bool consume;
-
+	public List<BlockType> savedBlocks;
 	public BlockBehaviour savedBlock;
-
 	public BlockType queuedBlock;
 
 	// Use this for initialization
 	void Start () {
+		savedBlocks = new List<BlockType> ();
 		player = GetComponentInParent<Controller> ();
 	}
 
@@ -73,6 +73,10 @@ public class TileSelector : MonoBehaviour {
 	public void consumeBlock(){
 		if (savedBlock != null) {
 			queuedBlock = savedBlock.getType ();
+			savedBlocks.Add (queuedBlock);
+			if (savedBlocks.Count > 3) {
+				savedBlocks.RemoveAt (0);
+			}
 			Destroy (savedBlock.gameObject);
 			savedBlock = null;
 		}

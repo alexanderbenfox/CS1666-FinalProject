@@ -32,13 +32,13 @@ public class SlidingBlock : BlockBehaviour {
 		if (gameObject.transform.position.x >= (initialPosition.x + (direction * slideDistance))&& direction==1) {
 			moving = false;
 			moving2 = false;
-			Debug.Log ("Full Distance");
+
 
 		}
 		if (gameObject.transform.position.x <= (initialPosition.x + (direction * slideDistance)) && direction == -1) {
 			moving = false;
 			moving2 = false;
-			Debug.Log ("Full Distance");
+
 		}
 
 		if (moving) {

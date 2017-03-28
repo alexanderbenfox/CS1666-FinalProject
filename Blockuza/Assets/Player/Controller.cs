@@ -18,6 +18,7 @@ public class Controller : MonoBehaviour {
 	private SpriteRenderer sprite;
 	private InputControl input;
 	public ControlType control;
+	private TimeStuff time;
 
 	[SerializeField]
 	private Direction direction;
@@ -29,6 +30,7 @@ public class Controller : MonoBehaviour {
 		sprite = this.GetComponent<SpriteRenderer> ();
 		input = new InputControl ();
 		input.setControlType (control);
+		time = this.GetComponent<TimeStuff> ();
 	}
 
 	public bool checkKeyPressed(Keys k){
@@ -84,7 +86,14 @@ public class Controller : MonoBehaviour {
 		if (getCursorDirection () != Direction.NONE) {
 			direction = getCursorDirection ();
 		}
-		Move ();
+		if (!time.lockAction) {
+			physics.effectedByGravity = true;
+			Move ();
+		}
+		else {
+			physics.effectedByGravity = false;
+			physics.Move (0, 0);
+		}
 	}
 
 	public void Move(){

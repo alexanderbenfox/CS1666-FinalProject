@@ -26,13 +26,15 @@ public class makeBlock : MonoBehaviour {
 			BlockType[] blockList = selector.savedBlocks.ToArray();
 			BlockType newBlock = blockList [selector.savedBlocks.Count - 1];
 			selector.savedBlocks.RemoveAt (selector.savedBlocks.Count - 1);
+			GameObject blockInst;
 			if (newBlock == BlockType.Sliding) {
-				GameObject blockInst = Instantiate (SlideBlockPrefab, position, gameObject.transform.rotation);
+				blockInst = Instantiate (SlideBlockPrefab, position, gameObject.transform.rotation);
 			}else if (newBlock == BlockType.Sticky) {
-				GameObject blockInst = Instantiate (StickyBlockPrefab, position, gameObject.transform.rotation);
+				blockInst = Instantiate (StickyBlockPrefab, position, gameObject.transform.rotation);
 			} else {
-				GameObject blockInst = Instantiate (DestroyBlockPrefab, position, gameObject.transform.rotation);
+				blockInst = Instantiate (DestroyBlockPrefab, position, gameObject.transform.rotation);
 			}
+			blockInst.tag = "PlayerBlock";
 		}
 	}
 }

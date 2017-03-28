@@ -172,6 +172,9 @@ public class PhysicsObject : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
+		if (!effectedByGravity) {
+			_dy = 0;
+		}
 		if (!_collisionThisFrame && !_collisionLastFrame) 
 			_grounded = false; _left = false; _right = false; _top = false;
 		float x = trans.position.x;

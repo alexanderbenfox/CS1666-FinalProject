@@ -6,9 +6,12 @@ public class TimeStuff : MonoBehaviour
 {
 	public Controller controller;
 	public int STACK_MAX_SIZE;
-	public int HIT_PENALTY;
+	public int HIT_PENALTY; //In seconds
 	private ArrayList positions;
 	private float runningTime;
+
+	public IEnumerator goThruPoints;
+	public bool lockAction;
 
 	void Start()
 	{
@@ -16,25 +19,23 @@ public class TimeStuff : MonoBehaviour
 		positions = new ArrayList(STACK_MAX_SIZE);
 		positions.Add(this.gameObject.transform.position);
 		runningTime = 0; 
+		goThruPoints = goThroughAllPoints ();
+		lockAction = false;
 	}
 
 	void Update()
 	{
-		if (positions.Count == STACK_MAX_SIZE)
-		{
-			positions.RemoveAt(0);
-		}
-
 		runningTime += Time.deltaTime;
 
 		// Debug.Log(runningTime);
 
-		if (runningTime >= 1f)
+		if (runningTime >= (float)HIT_PENALTY/(float)STACK_MAX_SIZE && !lockAction)
 		{
 			positions.Add(this.gameObject.transform.position);
+			if (positions.Count > STACK_MAX_SIZE) {
+				positions.RemoveAt (0);
+			}
 			runningTime = 0; 
-
-			// Debug.Log(this.gameObject.transform.position);
 		}
 	}
 
@@ -42,12 +43,18 @@ public class TimeStuff : MonoBehaviour
 	{
 		if (col.gameObject.CompareTag("Shuriken"))
 		{
-			while (positions.Count > STACK_MAX_SIZE - HIT_PENALTY)
-			{
-				this.gameObject.transform.position = (Vector3) positions[positions.Count - 1];
-				positions.RemoveAt(positions.Count - 1);
-			}
-			positions.Add(this.gameObject.transform.position);
+			StartCoroutine (goThruPoints);
 		}
+	}
+
+	IEnumerator goThroughAllPoints(){
+		lockAction = true;
+		for (int i = positions.Count-1; i >= 0; i--) {
+			this.gameObject.transform.position = (Vector3)positions [i];
+			yield return new WaitForSeconds (.05f);
+		}
+		lockAction = false;
+		goThruPoints = goThroughAllPoints ();
+
 	}
 }

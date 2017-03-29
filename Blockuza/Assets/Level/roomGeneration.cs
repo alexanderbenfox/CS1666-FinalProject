@@ -36,7 +36,7 @@ public class roomGeneration : MonoBehaviour {
 
 
 		//choose where puzzle will be in relation to the room
-		int puzzlePlace = randomSeed.Next(0, sectionsWide + 1);
+		int puzzlePlace = randomSeed.Next(1, sectionsWide + 1);
 		placePuzzle(puzzlePlace);
 
 		int sectionsLeft = sectionsWide - puzzlePlace;

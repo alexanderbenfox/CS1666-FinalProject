@@ -6,46 +6,62 @@ using System;
 public class placeObject : MonoBehaviour {
 	public float[] objLocations;//see getCoords(double coordinate) for description 
 	public Boolean[] objAbove;
-	private float x;
-
-	void Start()
-	{
-		Transform t = this.GetComponent<Transform>();
-		x = t.position.x;
-	}
-
+	private float x; // x axis offset
 
 	// Finds index to place the object, then calls validIndex() to place it
-	public void Place (GameObject obj) 
+	public void Place (GameObject obj, float offset) 
 	{
+		x = offset;
 		System.Random rand = new System.Random();
 		int index = rand.Next(0, objLocations.Length);
-
-		while (index < objLocations.Length)
+		Boolean found = false;
+		while (!found)
 		{
 			if (objAbove[index] == false) //nothing above this square, so place the object
 			{
+				objAbove[index] = true;
 				validIndex(index, obj);
-				break;
+				found = true;
 			}
 			else //try next index
 			{
-				if (index++ >= objLocations.Length) //restart from beginning if at last index
-				{
+				if (index+1 >= objLocations.Length) //restart from beginning if at last index
 					index = 0;
-				}
+				else
+					index++;
 			}
 
 		}
 		return;
 	}
 
+	//Places character all the way to the left or right
+	public void PlaceChar(GameObject obj, int level)
+	{
+		int index;
+		if (level % 2 != 0) //odd levels start at the left
+		{
+			index = 0;
+		}
+		else // even will start at right
+		{
+			index = objLocations.Length - 1;
+		}
+		objAbove[index] = true;
+		validIndex(index, obj);
+		return;
+	}
+
 	// Instantiates the object above coords of index found in Place()
 	private void validIndex(int index, GameObject obj)
 	{
-		objAbove[index] = true;
 		int[] coords = getCoords(objLocations[index]);
-		Instantiate(obj, new Vector2(x+.32f * (float)coords[0], .32f * ((float)coords[1] + 1.0f)), Quaternion.identity);
+
+		float xx = x + (.32f * (float)coords[0]);
+		float yy = .32f * (float)(coords[1] + 1);
+
+		Instantiate(obj, new Vector2(xx, yy), Quaternion.identity);
+
 		return;
 	}
 
@@ -58,8 +74,7 @@ public class placeObject : MonoBehaviour {
 	{
 		int[] coords = new int[2];
 		coords[0] = (int)coordinate; // x value
-		coords[1] = (int)(coordinate - (float)coords[0]) *10; // y value
-		Debug.Log("x: "+coords[0]+"y: " + coords[1]);
+		coords[1] = (int)(((coordinate % 1) + .001f) * 10f); // y value
 		return coords;
 	}
 

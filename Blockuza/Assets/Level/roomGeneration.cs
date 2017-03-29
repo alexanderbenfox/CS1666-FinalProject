@@ -10,54 +10,90 @@ public class roomGeneration : MonoBehaviour {
 	public GameObject[] specialBlox;
 	public GameObject mainCharPrefab;
 	public GameObject enemyPrefab;
-	public int enemyConcentration; // num enemies per section
-	public int sectionsWide;
-	public int level;
+	public float enemyConcentration; // percent of rooms we want enemies in
+	public int sectionsWide; //total length is sectionsWide x 10
+	public int level; // will determine if left to right, or right to left
 	//public int numPuzzles; //number of puzzles in the room
-	//public int level; // will determine if left to right, or right to left
 
-	private float cellSize = 1.6f; // 5 blocks x .32 wide
+
+	private float cellSize = 3.2f; // 10 blocks x .32 wide
 	private GameObject[] specBlox;
+	private System.Random randomSeed = new System.Random();
+	private float offset;
+	private int numEnemies;
 
 	// Use this for initialization
 	void Start () 
 	{
-		//int numSections = sectionsWide / numPuzzles; //number of 
-
-		GenerateSection();
+		numEnemies = (int)((float)sectionsWide * enemyConcentration);
+		offset = 0;
+		GenerateRoom();
 	}
 	
 	// Update is called once per frame
-	void GenerateSection() 
+	void GenerateRoom() 
 	{
-		System.Random randomSeed = new System.Random();
 
-		//get the puzzle for the room
+
+		//choose where puzzle will be in relation to the room
+		int puzzlePlace = randomSeed.Next(0, sectionsWide + 1);
+		placePuzzle(puzzlePlace);
+
+		int sectionsLeft = sectionsWide - puzzlePlace;
+
+
+
+		for (int i = 0; i < sectionsLeft; i++)
+		{
+			//pick starting room section
+			int rand = randomSeed.Next(0, sectionPrefabs.Length);
+			GameObject next = sectionPrefabs[rand];
+			GameObject current = Instantiate(next, new Vector2(offset, 0), Quaternion.identity); //place section
+
+			current.GetComponent<placeObject>().Place(specBlox[0], offset); //put special block in the section
+
+			if (i == (sectionsWide - 1))
+				current.GetComponent<placeObject>().Place(enemyPrefab, offset);
+			offset += cellSize;
+		}
+
+
+
+
+	}
+
+	void placePuzzle(int puzzlePlace)
+	{
+		//get the puzzle for the room and blocks needed to complete
 		int rand = randomSeed.Next(0, puzzlePrefabs.Length);
-		GameObject puzzle = puzzlePrefabs[rand]; 
+		GameObject puzzle = puzzlePrefabs[rand];
 		specBlox = puzzle.GetComponent<BlocksRequired>().blocksRequired;
 
 		//pick starting room section
 		rand = randomSeed.Next(0, sectionPrefabs.Length);
 		GameObject next = sectionPrefabs[rand];
 
-		int i=0;
-		while (i < sectionsWide)
+		for (int i = 0; i < puzzlePlace; i++) //place level sections up until puzzle placement
 		{
-			GameObject current = Instantiate(next, new Vector2(i * cellSize, 0), Quaternion.identity); //place section
+			GameObject current = Instantiate(next, new Vector2(offset, 0), Quaternion.identity); //place section
 
-			if(i==0)
-				current.GetComponent<placeObject>().PlaceChar(mainCharPrefab,level); //put main character in first section
+			if (i == 0)
+				current.GetComponent<placeObject>().PlaceChar(mainCharPrefab, level); //place main char depending on level
+
+			current.GetComponent<placeObject>().Place(specBlox[0], offset); //put special block in the section
+
+			if (i == (sectionsWide - 1))
+				current.GetComponent<placeObject>().Place(enemyPrefab, offset);
 			
-			current.GetComponent<placeObject>().Place(specBlox[0],i * cellSize); //put special block in the section
-
-			if(i==(sectionsWide-1))
-				current.GetComponent<placeObject>().Place(enemyPrefab,i*cellSize);
 			rand = randomSeed.Next(0, sectionPrefabs.Length);
 			next = sectionPrefabs[rand];
-			i++;
+			offset += cellSize;
 		}
 
-		Instantiate(puzzle, new Vector2(i * cellSize, 0), Quaternion.identity);
+		//place puzzle and increment offset
+		Instantiate(puzzle, new Vector2(offset, 0), Quaternion.identity);
+		offset += cellSize;
+
+		return;
 	}
 }

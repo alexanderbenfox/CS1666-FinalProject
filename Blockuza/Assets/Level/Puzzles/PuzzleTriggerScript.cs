@@ -6,11 +6,17 @@ public class PuzzleTriggerScript : MonoBehaviour {
 	public Puzzle thisPuzzle;
 	// Use this for initialization
 	void OnTriggerEnter2D(Collider2D col){
-		thisPuzzle.Triggered = true;
-		Debug.Log ("Triggered");
+		if (col.transform.tag != "Player" || col.transform.tag != "Enemy")
+		{
+			thisPuzzle.Triggered = true;
+			Debug.Log("Triggered");
+		}
 	}
 	void OnTriggerExit2D(Collider2D col){
-		thisPuzzle.Triggered = false;
-		Debug.Log ("No  Longer Triggered");
+		if (col.transform.tag != "Player" || col.transform.tag != "Enemy")
+		{
+			thisPuzzle.Triggered = false;
+			Debug.Log("Triggered");
+		}
 	}
 }

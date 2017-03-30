@@ -15,11 +15,7 @@ public class SlidingBlock : BlockBehaviour {
 		type = BlockType.Sliding;
 		snap = this.GetComponent<SnapToGrid> ();
 		initialPosition = gameObject.transform.position;
-		if (player.GetComponent<Controller> ().getCursorDirection () == Direction.LEFT || player.GetComponent<Controller> ().getCursorDirection () == Direction.DOWN_LEFT || player.GetComponent<Controller> ().getCursorDirection () == Direction.UP_LEFT) {
-			direction = -1;
-		} else {
-			direction = 1;
-		}
+		direction = 1;
 		if (this.gameObject.GetComponent<PhysicsObject> () != null) {
 			physics = this.gameObject.GetComponent<PhysicsObject> ();
 		}

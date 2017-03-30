@@ -56,6 +56,7 @@
      <Compile Include="Assets\Level\Puzzles\Puzzle.cs" />
      <Compile Include="Assets\Level\Puzzles\PuzzleTriggerScript.cs" />
      <Compile Include="Assets\Level\Puzzles\Puzzles\Puzzle4.cs" />
+     <Compile Include="Assets\Level\Puzzles\Puzzles\Puzzle5.cs" />
      <Compile Include="Assets\Level\SnapToGrid.cs" />
      <Compile Include="Assets\Level\placeObject.cs" />
      <Compile Include="Assets\Level\roomGeneration.cs" />

@@ -11,7 +11,7 @@ public enum Direction{
 }
 
 public class Controller : MonoBehaviour {
-	public Direction lastDirection = Direction.RIGHT; //used in destroyable block placement
+	public bool moving=false; //used in destroyable block placement
 
 	private PhysicsObject physics;
 	private Animator anim;
@@ -19,8 +19,6 @@ public class Controller : MonoBehaviour {
 	private InputControl input;
 	public ControlType control;
 	private TimeStuff time;
-
-	public Camera c;
 
 	[SerializeField]
 	private Direction direction;
@@ -76,36 +74,7 @@ public class Controller : MonoBehaviour {
 				return Direction.DOWN;
 			
 		} else if (input.control == ControlType.MouseAndKeyboard) {
-			Vector2 mousePosition = c.ScreenToWorldPoint(new Vector2(Input.mousePosition.x, Input.mousePosition.y));
-			bool right = false, left =false, up = false, down = false;
-			if (mousePosition.x >= this.transform.position.x + .16) {
-				right = true;
-			}
-			if (mousePosition.x <= this.transform.position.x - .16) {
-				left = true;
-			}
-			if (mousePosition.y >= this.transform.position.y + .16) {
-				up = true;
-			}
-			if (mousePosition.y <= this.transform.position.y - .16) {
-				down = true;
-			}
-			if (right && up)
-				return Direction.UP_RIGHT;
-			if (right && down)
-				return Direction.DOWN_RIGHT;
-			if (left && up)
-				return Direction.UP_LEFT;
-			if (left && down)
-				return Direction.DOWN_LEFT;
-			if (right)
-				return Direction.RIGHT;
-			if (left)
-				return Direction.LEFT;
-			if (up)
-				return Direction.UP;
-			if (down)
-				return Direction.DOWN;
+			return Direction.RIGHT;
 		}
 		return direction;
 		
@@ -133,12 +102,12 @@ public class Controller : MonoBehaviour {
 		if (input.keysHeld.Contains (Keys.LEFT)) {
 			x = -1;
 			sprite.flipX = true;
-			lastDirection = Direction.LEFT;
+			moving = true;
 		}
 		if (input.keysHeld.Contains (Keys.RIGHT)) {
 			x = 1;
 			sprite.flipX = false;
-			lastDirection = Direction.RIGHT;
+			moving = true;
 		}
 		if (input.keysPressed.Contains (Keys.JUMP) && physics.checkGrounded())
 			y = 5;

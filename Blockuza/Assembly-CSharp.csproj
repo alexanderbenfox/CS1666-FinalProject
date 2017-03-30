@@ -50,6 +50,7 @@
      <Compile Include="Assets\Blocks\SlidingBlock.cs" />
      <Compile Include="Assets\Blocks\StickBlock.cs" />
      <Compile Include="Assets\Enemy\EnemyScript.cs" />
+     <Compile Include="Assets\GUI\BlockStack.cs" />
      <Compile Include="Assets\Level\Puzzles\BlocksRequired.cs" />
      <Compile Include="Assets\Level\Puzzles\ChasmPuzzle\ChasmPuzzle.cs" />
      <Compile Include="Assets\Level\Puzzles\Puzzle.cs" />
@@ -59,6 +60,7 @@
      <Compile Include="Assets\Level\placeObject.cs" />
      <Compile Include="Assets\Level\roomGeneration.cs" />
      <Compile Include="Assets\Physics\PhysicsObject.cs" />
+     <Compile Include="Assets\Player\CameraControl.cs" />
      <Compile Include="Assets\Player\Controller.cs" />
      <Compile Include="Assets\Player\InputControl.cs" />
      <Compile Include="Assets\Player\TileSelector.cs" />

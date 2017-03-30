@@ -52,6 +52,12 @@ public class TileSelector : MonoBehaviour {
 			x += blockSize;
 			y -= blockSize;
 			break;
+		case(Direction.UP):
+			y += blockSize;
+			break;
+		case(Direction.DOWN):
+			y -= blockSize;
+			break;
 		default:
 			break;	
 		}

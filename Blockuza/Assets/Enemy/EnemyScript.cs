@@ -13,6 +13,7 @@ public class EnemyScript : MonoBehaviour {
 
 	private bool dying;
 	public bool dead;
+	public LayerMask floor;
 
 	// Use this for initialization
 	void Start () {
@@ -49,13 +50,34 @@ public class EnemyScript : MonoBehaviour {
 		}
 	}
 
+	bool IsAboutToFall(){
+		float x = 0;
+		float y = -1;
+		if (direction == Direction.RIGHT) {
+			x = 1;
+		} else {
+			x = -1;
+		}
+		Vector2 dir = new Vector2 (x, y);
+		float dist = Mathf.Sqrt (2) * 1f;
+
+		RaycastHit2D hit = Physics2D.Raycast (this.transform.position, dir, dist,floor);
+		if (hit.collider == null) {
+			return true;
+		} else {
+			Debug.Log (hit.collider.gameObject.name);
+			return false;
+		}
+	}
+
 	public void Move(){
 		float x = 0;
 		float y = 0;
-		if (direction == Direction.RIGHT && physics.checkRightCollision ()) {
+
+		if (direction == Direction.RIGHT && (physics.checkRightCollision () || IsAboutToFall())) {
 			direction = Direction.LEFT;
 		}
-		if (direction == Direction.LEFT && physics.checkLeftCollision ()) {
+		if (direction == Direction.LEFT && (physics.checkLeftCollision () || IsAboutToFall())) {
 			direction = Direction.RIGHT;
 		}
 

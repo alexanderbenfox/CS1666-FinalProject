@@ -180,7 +180,7 @@ public class PhysicsObject : MonoBehaviour {
 		float x = trans.position.x;
 		float y = trans.position.y;
 
-		if(!_grounded && effectedByGravity)
+		if(!_grounded && effectedByGravity && _dy > -500f)
 			_dy -= (9.8f * Time.deltaTime);
 		
 		box = new Box (col);

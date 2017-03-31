@@ -6,7 +6,7 @@ public class PuzzleTriggerScript : MonoBehaviour {
 	public Puzzle thisPuzzle;
 	// Use this for initialization
 	void OnTriggerEnter2D(Collider2D col){
-		if (col.transform.tag == "Player"){
+		if (col.transform.tag == "Player" ||col.transform.tag == "Shuriken"){
 			Debug.Log("Player :)");
 		
 		}else
@@ -18,7 +18,7 @@ public class PuzzleTriggerScript : MonoBehaviour {
 
 	}
 	void OnTriggerExit2D(Collider2D col){
-		if (col.transform.tag == "Player")
+		if (col.transform.tag == "Player"|| col.transform.tag == "Shuriken")
 		{
 			Debug.Log("Player :)");
 

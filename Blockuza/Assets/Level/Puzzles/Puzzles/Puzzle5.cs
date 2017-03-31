@@ -5,6 +5,7 @@ using UnityEngine;
 public class Puzzle5 : Puzzle 
 {
 	public GameObject[] TriggerBlocks;
+	public GameObject wall;
 
 	// Use this for initialization
 	void Start () 
@@ -21,5 +22,9 @@ public class Puzzle5 : Puzzle
 			TriggerBlocks[0].SetActive(false);
 			TriggerBlocks[1].SetActive(true);
 		}
+
+		GameObject[] enemies = GameObject.FindGameObjectsWithTag("Puzzle");
+		if (enemies.Length == 0)
+			wall.SetActive(false);
 	}
 }

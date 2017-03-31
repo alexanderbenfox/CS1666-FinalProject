@@ -138,7 +138,7 @@ public class roomGeneration : MonoBehaviour {
 
 		//place puzzle and increment offset
 		Instantiate(puzzle, new Vector2(offset, 0), Quaternion.identity);
-		offset += cellSize;
+		offset += (cellSize*2);
 
 		return;
 	}

@@ -15,9 +15,9 @@ public class CameraControl : MonoBehaviour {
 		x = followObject.position.x - currentX;
 		y = followObject.position.y - currentY;
 
-		x = x * (followSpeed*Time.deltaTime);
-		y = y * (followSpeed*Time.deltaTime);
+		x = x * (followSpeed * Time.deltaTime);
+		y = y * (followSpeed * Time.deltaTime);
 
-		this.transform.position = new Vector2 (currentX+x, currentY+y);
+		this.transform.position = new Vector2(currentX + x, currentY + y);
 	}
 }

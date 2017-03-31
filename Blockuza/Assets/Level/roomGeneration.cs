@@ -8,9 +8,7 @@ public class roomGeneration : MonoBehaviour {
 	public GameObject[] sectionPrefabs;
 	public GameObject[] puzzlePrefabs;
 	public GameObject[] specialBlox;
-	public GameObject mainCharPrefab;
 	public GameObject enemyPrefab;
-	//public float enemyConcentration; // percent of rooms we want enemies in
 	public int sectionsWide; //total length is sectionsWide x 10
 	public int level; // will determine if left to right, or right to left
 	//public int numPuzzles; //number of puzzles in the room
@@ -25,9 +23,12 @@ public class roomGeneration : MonoBehaviour {
 	// Use this for initialization
 	void Start () 
 	{
-		numEnemies = randomSeed.Next(1,sectionsWide);
+		numEnemies = randomSeed.Next(1, sectionsWide);
 		offset = 0;
 		GenerateRoom();
+
+		GameObject player = GameObject.Find("Player(Clone)");
+
 	}
 	
 	// Update is called once per frame
@@ -88,10 +89,6 @@ public class roomGeneration : MonoBehaviour {
 		for (int i = 0; i < puzzlePlace; i++) //place level sections up until puzzle placement
 		{
 			GameObject current = Instantiate(next, new Vector2(offset, 0), Quaternion.identity); //place section
-
-			if (i == 0)
-				current.GetComponent<placeObject>().PlaceChar(mainCharPrefab, level); //place main char depending on level
-
 
 			//Block placement logic
 			int blocksInSection = randomSeed.Next(1, 3);

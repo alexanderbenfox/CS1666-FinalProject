@@ -41,6 +41,7 @@ public class Controller : MonoBehaviour
 		time = this.GetComponent<TimeStuff>();
 	}
 
+
 	public bool checkKeyPressed(Keys k)
 	{
 		return input.keysPressed.Contains(k);

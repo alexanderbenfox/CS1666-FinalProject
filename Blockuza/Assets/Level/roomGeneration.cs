@@ -10,14 +10,14 @@ public class roomGeneration : MonoBehaviour {
 	public GameObject[] specialBlox;
 	public GameObject mainCharPrefab;
 	public GameObject enemyPrefab;
-	public float enemyConcentration; // percent of rooms we want enemies in
+	//public float enemyConcentration; // percent of rooms we want enemies in
 	public int sectionsWide; //total length is sectionsWide x 10
 	public int level; // will determine if left to right, or right to left
 	//public int numPuzzles; //number of puzzles in the room
 
 
 	private float cellSize = 3.2f; // 10 blocks x .32 wide
-	private GameObject[] specBlox;
+	private GameObject[] puzzBlox;
 	private System.Random randomSeed = new System.Random();
 	private float offset;
 	private int numEnemies;
@@ -25,7 +25,7 @@ public class roomGeneration : MonoBehaviour {
 	// Use this for initialization
 	void Start () 
 	{
-		numEnemies = (int)((float)sectionsWide * enemyConcentration);
+		numEnemies = randomSeed.Next(1,sectionsWide);
 		offset = 0;
 		GenerateRoom();
 	}
@@ -41,8 +41,6 @@ public class roomGeneration : MonoBehaviour {
 
 		int sectionsLeft = sectionsWide - puzzlePlace;
 
-
-
 		for (int i = 0; i < sectionsLeft; i++)
 		{
 			//pick starting room section
@@ -50,10 +48,22 @@ public class roomGeneration : MonoBehaviour {
 			GameObject next = sectionPrefabs[rand];
 			GameObject current = Instantiate(next, new Vector2(offset, 0), Quaternion.identity); //place section
 
-			current.GetComponent<placeObject>().Place(specBlox[0], offset); //put special block in the section
+			//Block placement logic
+			int blocksInSection = randomSeed.Next(1, 3);
+			for (int j = 0; j < blocksInSection; j++)
+			{
+				rand = randomSeed.Next(0, specialBlox.Length);
+				current.GetComponent<placeObject>().Place(specialBlox[rand], offset);
+			}
 
-			if (i == (sectionsWide - 1))
+
+			//Enemy placement logic
+			int enemiesInSection = randomSeed.Next(0, 3);
+			for (int j = 0; j < enemiesInSection;j++)
+			{
 				current.GetComponent<placeObject>().Place(enemyPrefab, offset);
+			}
+
 			offset += cellSize;
 		}
 
@@ -67,7 +77,9 @@ public class roomGeneration : MonoBehaviour {
 		//get the puzzle for the room and blocks needed to complete
 		int rand = randomSeed.Next(0, puzzlePrefabs.Length);
 		GameObject puzzle = puzzlePrefabs[rand];
-		specBlox = puzzle.GetComponent<BlocksRequired>().blocksRequired;
+		puzzBlox = puzzle.GetComponent<BlocksRequired>().blocksRequired;
+		int numBlox = puzzBlox.Length;
+		int currentBlock = 0;
 
 		//pick starting room section
 		rand = randomSeed.Next(0, sectionPrefabs.Length);
@@ -80,11 +92,45 @@ public class roomGeneration : MonoBehaviour {
 			if (i == 0)
 				current.GetComponent<placeObject>().PlaceChar(mainCharPrefab, level); //place main char depending on level
 
-			current.GetComponent<placeObject>().Place(specBlox[0], offset); //put special block in the section
 
-			if (i == (sectionsWide - 1))
+			//Block placement logic
+			int blocksInSection = randomSeed.Next(1, 3);
+			for (int j = 0; j < blocksInSection; j++)
+			{
+				if (i == puzzlePlace - 1 && currentBlock < numBlox - 1) //last section before puzzle and not all blocks required are placed
+				{
+					while (currentBlock < numBlox)
+					{
+						current.GetComponent<placeObject>().Place(puzzBlox[currentBlock], offset);
+						currentBlock++;
+					}
+					break;
+				}
+				else
+				{
+					rand = randomSeed.Next(1, 11);
+					if (rand < 6 && currentBlock < numBlox) //place a block required by the puzzle
+					{
+						current.GetComponent<placeObject>().Place(puzzBlox[currentBlock], offset);
+						currentBlock++;
+					}
+					else //choose a random block
+					{
+						rand = randomSeed.Next(0, specialBlox.Length);
+						current.GetComponent<placeObject>().Place(specialBlox[rand], offset);
+					}
+				}
+			}
+
+
+			//Enemy placement logic
+			int enemiesInSection = randomSeed.Next(0, 3);
+			for (int j = 0; j < enemiesInSection;j++)
+			{
 				current.GetComponent<placeObject>().Place(enemyPrefab, offset);
-			
+			}
+
+
 			rand = randomSeed.Next(0, sectionPrefabs.Length);
 			next = sectionPrefabs[rand];
 			offset += cellSize;

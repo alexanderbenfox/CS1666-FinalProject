@@ -10,8 +10,15 @@ public class TimeStuff : MonoBehaviour
 	private ArrayList positions;
 	private float runningTime;
 
+	public float invulnerableTime = 0;
+
 	public IEnumerator goThruPoints;
 	public bool lockAction;
+
+	private SpriteRenderer renderer;
+
+	int frameCounter;
+	bool colorSwitch;
 
 	void Start()
 	{
@@ -21,11 +28,34 @@ public class TimeStuff : MonoBehaviour
 		runningTime = 0; 
 		goThruPoints = goThroughAllPoints ();
 		lockAction = false;
+		frameCounter = 0;
+	}
+
+	void Awake(){
+		renderer = GetComponentInParent<SpriteRenderer> ();
 	}
 
 	void Update()
 	{
 		runningTime += Time.deltaTime;
+
+		if (invulnerableTime > 0) {
+			invulnerableTime -= Time.deltaTime;
+			frameCounter++;
+			if (frameCounter == 10) {
+				colorSwitch = true;
+				frameCounter = 0;
+			}
+
+			if (colorSwitch && renderer.color == Color.white)
+				renderer.color = Color.black;
+			else if (colorSwitch && renderer.color == Color.black)
+				renderer.color = Color.white;
+			colorSwitch = false;
+		} else {
+			renderer.color = Color.white;
+			frameCounter = 0;
+		}
 
 		// Debug.Log(runningTime);
 
@@ -43,7 +73,8 @@ public class TimeStuff : MonoBehaviour
 	{
 		if (col.gameObject.CompareTag("Shuriken"))
 		{
-			StartCoroutine (goThruPoints);
+			if(invulnerableTime <= 0)
+				StartCoroutine (goThruPoints);
 		}
 	}
 
@@ -55,6 +86,7 @@ public class TimeStuff : MonoBehaviour
 		}
 		lockAction = false;
 		goThruPoints = goThroughAllPoints ();
+		invulnerableTime = (float)HIT_PENALTY/2;
 
 	}
 }

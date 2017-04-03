@@ -26,9 +26,6 @@ public class roomGeneration : MonoBehaviour {
 		numEnemies = randomSeed.Next(1, sectionsWide);
 		offset = 0;
 		GenerateRoom();
-
-		GameObject player = GameObject.Find("Player(Clone)");
-
 	}
 	
 	// Update is called once per frame

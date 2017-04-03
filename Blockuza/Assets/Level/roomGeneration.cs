@@ -88,7 +88,7 @@ public class roomGeneration : MonoBehaviour {
 			GameObject current = Instantiate(next, new Vector2(offset, 0), Quaternion.identity); //place section
 
 			//Block placement logic
-			int blocksInSection = randomSeed.Next(1, 3);
+			int blocksInSection = randomSeed.Next(1, 2);
 			for (int j = 0; j < blocksInSection; j++)
 			{
 				if (i == puzzlePlace - 1 && currentBlock < numBlox - 1) //last section before puzzle and not all blocks required are placed

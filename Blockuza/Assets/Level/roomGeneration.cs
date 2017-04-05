@@ -14,7 +14,7 @@ public class roomGeneration : MonoBehaviour {
 	//public int numPuzzles; //number of puzzles in the room
 
 
-	private float cellSize = 3.2f; // 10 blocks x .32 wide
+	private float cellSize = 6.4f; // 10 blocks x .32 wide
 	private GameObject[] puzzBlox;
 	private System.Random randomSeed = new System.Random();
 	private float offset;
@@ -132,7 +132,7 @@ public class roomGeneration : MonoBehaviour {
 
 		//place puzzle and increment offset
 		Instantiate(puzzle, new Vector2(offset, 0), Quaternion.identity);
-		offset += (cellSize*2);
+		offset += (cellSize);
 
 		return;
 	}

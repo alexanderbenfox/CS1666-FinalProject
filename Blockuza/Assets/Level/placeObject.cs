@@ -17,6 +17,8 @@ public class placeObject : MonoBehaviour {
 		Boolean found = false;
 		while (!found)
 		{
+			Debug.Log("Index: " + index);
+			Debug.Log("objAbove length" + objAbove.Length);
 			if (objAbove[index] == false) //nothing above this square, so place the object
 			{
 				objAbove[index] = true;

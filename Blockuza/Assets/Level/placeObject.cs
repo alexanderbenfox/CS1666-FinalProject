@@ -17,8 +17,6 @@ public class placeObject : MonoBehaviour {
 		Boolean found = false;
 		while (!found)
 		{
-			Debug.Log("Index: " + index);
-			Debug.Log("objAbove length" + objAbove.Length);
 			if (objAbove[index] == false) //nothing above this square, so place the object
 			{
 				objAbove[index] = true;
@@ -62,8 +60,8 @@ public class placeObject : MonoBehaviour {
 		float xx = x + (.32f * (float)coords[0]);
 		float yy = .32f * (float)(coords[1] + 1);
 
-		Instantiate(obj, new Vector2(xx, yy), Quaternion.identity);
-
+		GameObject c = Instantiate(obj, new Vector2(xx, yy), Quaternion.identity);
+		c.transform.parent = this.transform;
 		return;
 	}
 

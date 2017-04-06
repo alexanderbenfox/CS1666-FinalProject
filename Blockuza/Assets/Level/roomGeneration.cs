@@ -21,7 +21,14 @@ public class roomGeneration : MonoBehaviour {
 	private int numEnemies;
 
 	// Use this for initialization
-	void Start () 
+	//void Start () 
+	//{
+	//	numEnemies = randomSeed.Next(1, sectionsWide);
+	//	offset = 0;
+	//	GenerateRoom();
+	//}
+
+	void OnEnable()
 	{
 		numEnemies = randomSeed.Next(1, sectionsWide);
 		offset = 0;
@@ -45,7 +52,7 @@ public class roomGeneration : MonoBehaviour {
 			int rand = randomSeed.Next(0, sectionPrefabs.Length);
 			GameObject next = sectionPrefabs[rand];
 			GameObject current = Instantiate(next, new Vector2(offset, 0), Quaternion.identity); //place section
-
+			current.transform.parent = this.transform;
 			//Block placement logic
 			int blocksInSection = randomSeed.Next(1, 3);
 			for (int j = 0; j < blocksInSection; j++)
@@ -86,7 +93,7 @@ public class roomGeneration : MonoBehaviour {
 		for (int i = 0; i < puzzlePlace; i++) //place level sections up until puzzle placement
 		{
 			GameObject current = Instantiate(next, new Vector2(offset, 0), Quaternion.identity); //place section
-
+			current.transform.parent = this.transform;
 			//Block placement logic
 			int blocksInSection = randomSeed.Next(1, 2);
 			for (int j = 0; j < blocksInSection; j++)
@@ -131,7 +138,8 @@ public class roomGeneration : MonoBehaviour {
 		}
 
 		//place puzzle and increment offset
-		Instantiate(puzzle, new Vector2(offset, 0), Quaternion.identity);
+		GameObject o = Instantiate(puzzle, new Vector2(offset, 0), Quaternion.identity);
+		o.transform.parent = this.transform;
 		offset += (cellSize);
 
 		return;

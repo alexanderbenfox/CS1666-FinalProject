@@ -51,6 +51,7 @@
      <Compile Include="Assets\Blocks\StickBlock.cs" />
      <Compile Include="Assets\Enemy\EnemyScript.cs" />
      <Compile Include="Assets\GUI\BlockStack.cs" />
+     <Compile Include="Assets\Level\DoorScript.cs" />
      <Compile Include="Assets\Level\Puzzles\BlocksRequired.cs" />
      <Compile Include="Assets\Level\Puzzles\ChasmPuzzle\ChasmPuzzle.cs" />
      <Compile Include="Assets\Level\Puzzles\Puzzle.cs" />

@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class Puzzle5 : Puzzle 
 {
-	public GameObject[] TriggerBlocks;
+	public GameObject TriggerBlocks;
 	public GameObject wall;
 
 	// Use this for initialization
 	void Start () 
 	{
-		TriggerBlocks[0].SetActive(true);
-		TriggerBlocks[1].SetActive(false);
+		TriggerBlocks.SetActive(true);
+		wall.SetActive(true);
 	}
 	
 	// Update is called once per frame
@@ -19,12 +19,13 @@ public class Puzzle5 : Puzzle
 	{
 		if (Triggered)
 		{
-			TriggerBlocks[0].SetActive(false);
-			TriggerBlocks[1].SetActive(true);
+			TriggerBlocks.SetActive(false);
 		}
 
 		GameObject[] enemies = GameObject.FindGameObjectsWithTag("Puzzle");
 		if (enemies.Length == 0)
+		{
 			wall.SetActive(false);
+		}
 	}
 }

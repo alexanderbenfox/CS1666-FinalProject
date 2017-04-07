@@ -13,7 +13,7 @@ public class makeBlock : MonoBehaviour {
 		selector = this.GetComponentInChildren<TileSelector> ();
 	}
 	void Update(){
-		if (controller.checkKeyPressed (Keys.ACTION)) {
+		if (controller.checkKeyPressed(Keys.ACTION)) {
 			if (selector.consume) {
 				selector.consumeBlock ();
 			} else {

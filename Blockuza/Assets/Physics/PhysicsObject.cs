@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-enum Side{
+public enum Side{
 	RIGHT, LEFT, TOP, BOTTOM, NONE
 }
 
@@ -45,10 +45,17 @@ public class PhysicsObject : MonoBehaviour {
 		}
 	}
 
+	public struct collision
+	{
+		public Box box;
+		public Side side;
+	}
+
 	private BoxCollider2D col;
 	[SerializeField]
 	public Box box;
 	private Transform trans;
+	public int numRays = 5;
 
 	[SerializeField]
 	private bool _grounded, _right, _left, _top;
@@ -94,7 +101,7 @@ public class PhysicsObject : MonoBehaviour {
 			_grounded = true;
 			break;
 		case Side.TOP:
-			y = box.translateTopCollision (other.bottom);
+			//y = box.translateTopCollision (other.bottom);
 			if(_dy >= 0) _dy = 0;
 			_top = true;
 			break;
@@ -140,22 +147,140 @@ public class PhysicsObject : MonoBehaviour {
 		}
 	}
 
+	List<collision> getCollisionSides(){
+		List<collision> collisionSides = new List<collision>();
+
+		float pixelSize = .01f;
+
+		float raySpacing_x = ((this.box.right - this.box.left) / (float)numRays);
+		float rayOffset_x = raySpacing_x;
+		float raySpacing_y = ((this.box.top - this.box.bottom) / (float)numRays);
+		float rayOffset_y = raySpacing_y;
+
+		Debug.Log (raySpacing_x);
+		Debug.Log (raySpacing_y);
+		Debug.Log (rayOffset_x);
+		Debug.Log (rayOffset_y);
+
+		float i = (this.box.left+rayOffset_x);
+		while ( i < (this.box.right-rayOffset_x)) {
+			Vector2 topVector = new Vector2(i, this.box.top);
+			RaycastHit2D upHit = Physics2D.Raycast (topVector, Vector2.up,pixelSize,collidableLayer);
+			if (upHit.collider != null && upHit.collider.gameObject != this.gameObject) {
+				collision col = new collision ();
+				col.box = new Box ((BoxCollider2D)upHit.collider);
+				col.side = Side.TOP;
+				collisionSides.Add (col);
+				break;
+			}
+			if (upHit.collider != null && upHit.collider.gameObject == this.gameObject) {
+				topVector = new Vector2 (i, this.box.top+pixelSize);
+				upHit = Physics2D.Raycast (topVector, Vector2.up,pixelSize,collidableLayer);
+				if (upHit.collider != null && upHit.collider.gameObject != this.gameObject) {
+					collision col = new collision ();
+					col.box = new Box ((BoxCollider2D)upHit.collider);
+					col.side = Side.TOP;
+					collisionSides.Add (col);
+					break;
+				}
+			}
+			i+=raySpacing_x;
+		}
+
+		i = (this.box.left + rayOffset_x);
+		while (i < (this.box.right-rayOffset_x)) {
+			Vector2 bottomVector = new Vector2 (i, this.box.bottom);
+			RaycastHit2D bottomHit = Physics2D.Raycast (bottomVector, -Vector2.up, pixelSize, collidableLayer);
+			if (bottomHit.collider != null && bottomHit.collider.gameObject != this.gameObject) {
+				collision col = new collision ();
+				col.box = new Box ((BoxCollider2D)bottomHit.collider);
+				col.side = Side.BOTTOM;
+				collisionSides.Add (col);
+				break;
+			}
+			if (bottomHit.collider != null && bottomHit.collider.gameObject == this.gameObject) {
+				bottomVector = new Vector2 (i, this.box.bottom-pixelSize);
+				bottomHit = Physics2D.Raycast (bottomVector, -Vector2.up, pixelSize, collidableLayer);
+				if (bottomHit.collider != null && bottomHit.collider.gameObject != this.gameObject) {
+					collision col = new collision ();
+					col.box = new Box ((BoxCollider2D)bottomHit.collider);
+					col.side = Side.BOTTOM;
+					collisionSides.Add (col);
+					break;
+				}
+			}
+			i+=raySpacing_x;
+		}
+
+		i = (this.box.bottom + rayOffset_y);
+		while(i < (this.box.top-rayOffset_y)) {
+			Vector2 rightVector = new Vector2(this.box.right, i);
+			RaycastHit2D rightHit = Physics2D.Raycast (rightVector, Vector2.right,pixelSize,collidableLayer);
+			if (rightHit.collider != null && rightHit.collider.gameObject != this.gameObject) {
+				collision col = new collision ();
+				col.box = new Box ((BoxCollider2D)rightHit.collider);
+				col.side = Side.RIGHT;
+				collisionSides.Add (col);
+				break;
+			}
+			if (rightHit.collider != null && rightHit.collider.gameObject == this.gameObject) {
+				rightVector = new Vector2 (this.box.right+pixelSize, i);
+				rightHit = Physics2D.Raycast (rightVector, Vector2.right, pixelSize, collidableLayer);
+				if (rightHit.collider != null && rightHit.collider.gameObject != this.gameObject) {
+					collision col = new collision ();
+					col.box = new Box ((BoxCollider2D)rightHit.collider);
+					col.side = Side.RIGHT;
+					collisionSides.Add (col);
+					break;
+				}
+			}
+			i += raySpacing_y;
+		}
+
+		i = (this.box.bottom + rayOffset_y);
+		while (i < (this.box.top-rayOffset_y)) {
+			Vector2 leftVector = new Vector2 (this.box.left, i);
+			RaycastHit2D leftHit = Physics2D.Raycast (leftVector, -Vector2.right, pixelSize, collidableLayer);
+			if (leftHit.collider != null && leftHit.collider.gameObject != this.gameObject) {
+				collision col = new collision ();
+				col.box = new Box ((BoxCollider2D)leftHit.collider);
+				col.side = Side.LEFT;
+				collisionSides.Add (col);
+				break;
+			}
+			if (leftHit.collider != null && leftHit.collider.gameObject == this.gameObject) {
+				leftVector = new Vector2 (this.box.left-pixelSize, i);
+				leftHit = Physics2D.Raycast (leftVector, -Vector2.right, pixelSize, collidableLayer);
+				if (leftHit.collider != null && leftHit.collider.gameObject != this.gameObject) {
+					collision col = new collision ();
+					col.box = new Box ((BoxCollider2D)leftHit.collider);
+					col.side = Side.LEFT;
+					collisionSides.Add (col);
+					break;
+				}
+			}
+			i += raySpacing_y;
+		}
+
+		return collisionSides;
+	}
+
 	void OnTriggerStay2D(Collider2D col){
-		if (((1<<col.gameObject.layer) & collidableLayer) != 0) {
+		/*if (((1<<col.gameObject.layer) & collidableLayer) != 0) {
 			_collisionThisFrame = true;
 			Box collisionBox = new Box (col.gameObject.GetComponent<BoxCollider2D>());
 			Side collisionSide = getCollisionSide (collisionBox);
 			handleCollision (collisionSide, collisionBox);
-		}
+		}*/
 	}
 
 	void OnTriggerExit2D(Collider2D col){
-		if (((1<<col.gameObject.layer) & collidableLayer) != 0) {
+		/*if (((1<<col.gameObject.layer) & collidableLayer) != 0) {
 			Debug.Log ("here");
 			Box collisionBox = new Box (col.gameObject.GetComponent<BoxCollider2D>());
 			Side collisionSide = getCollisionSide (collisionBox);
 			handleCollisionExit (collisionSide, collisionBox);
-		}
+		}*/
 	}
 
 	// Use this for initialization
@@ -172,18 +297,25 @@ public class PhysicsObject : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
+		box = new Box (col);
+		_grounded = false; _left = false; _right = false; _top = false;
+		List<collision> frameCollisions = getCollisionSides ();
+		for(int i = 0; i < frameCollisions.Count; i++){
+			handleCollision (frameCollisions [i].side, frameCollisions [i].box);
+		}
+
 		if (!effectedByGravity) {
 			_dy = 0;
 		}
-		if (!_collisionThisFrame && !_collisionLastFrame) 
-			_grounded = false; _left = false; _right = false; _top = false;
+		/*if (!_collisionThisFrame && !_collisionLastFrame) 
+			_grounded = false; _left = false; _right = false; _top = false;*/
+		
 		float x = trans.position.x;
 		float y = trans.position.y;
 
 		if(!_grounded && effectedByGravity && _dy > -500f)
 			_dy -= (9.8f * Time.deltaTime);
 		
-		box = new Box (col);
 		x += (_dx * Time.deltaTime);
 		y += (_dy * Time.deltaTime);
 		trans.position = new Vector2 (x, y);

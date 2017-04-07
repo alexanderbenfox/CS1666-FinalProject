@@ -69,11 +69,16 @@ public class TileSelector : MonoBehaviour {
 		transform.position = new Vector2(x, y);
 	}
 
-	void OnTriggerStay2D(Collider2D col){
+	void OnTriggerEnter2D(Collider2D col){
 		if (((1 << col.gameObject.layer) & blockLayer) != 0) {
 			savedBlock = col.gameObject.GetComponent<BlockBehaviour> ();
 			consume = true;
 		}
+	}
+
+	void OnTriggerExit2D(Collider2D col){
+		savedBlock = null;
+		consume = false;
 	}
 
 	public void consumeBlock(){
@@ -92,10 +97,10 @@ public class TileSelector : MonoBehaviour {
 	void FixedUpdate () {
 		moveCursor ();
 
-		if (savedBlock == null) {
+		/*if (savedBlock == null) {
 			consume = false;
 		}
 
-		savedBlock = null;
+		savedBlock = null;*/
 	}
 }

@@ -9,8 +9,10 @@ public class roomGeneration : MonoBehaviour {
 	public GameObject[] puzzlePrefabs;
 	public GameObject[] specialBlox;
 	public GameObject enemyPrefab;
+	public GameObject door;
 	public int sectionsWide; //total length is sectionsWide x 10
-	public int level; // will determine if left to right, or right to left
+	//private int level=1; // will determine if left to right, or right to left
+	public int lev = 1;
 	//public int numPuzzles; //number of puzzles in the room
 
 
@@ -21,84 +23,70 @@ public class roomGeneration : MonoBehaviour {
 	private int numEnemies;
 
 	// Use this for initialization
-	//void Start () 
-	//{
-	//	numEnemies = randomSeed.Next(1, sectionsWide);
-	//	offset = 0;
-	//	GenerateRoom();
-	//}
+	void Start () 
+	{
+		GenerateRoom(lev);
+	}
 
-	void OnEnable()
+	
+	// Pick where the puzzle is in the room, place sections before and after it
+	void GenerateRoom(int level) 
 	{
 		numEnemies = randomSeed.Next(1, sectionsWide);
-		offset = 0;
-		GenerateRoom();
-	}
-	
-	// Update is called once per frame
-	void GenerateRoom() 
-	{
+		offset = 0f;
 
+		int puzzlePlace = randomSeed.Next(1, sectionsWide); //choose where puzzle will be in relation to the room
 
-		//choose where puzzle will be in relation to the room
-		int puzzlePlace = randomSeed.Next(1, sectionsWide + 1);
-		placePuzzle(puzzlePlace);
-
-		int sectionsLeft = sectionsWide - puzzlePlace;
-
-		for (int i = 0; i < sectionsLeft; i++)
-		{
-			//pick starting room section
-			int rand = randomSeed.Next(0, sectionPrefabs.Length);
-			GameObject next = sectionPrefabs[rand];
-			GameObject current = Instantiate(next, new Vector2(offset, 0), Quaternion.identity); //place section
-			current.transform.parent = this.transform;
-			//Block placement logic
-			int blocksInSection = randomSeed.Next(1, 3);
-			for (int j = 0; j < blocksInSection; j++)
-			{
-				rand = randomSeed.Next(0, specialBlox.Length);
-				current.GetComponent<placeObject>().Place(specialBlox[rand], offset);
-			}
-
-
-			//Enemy placement logic
-			int enemiesInSection = randomSeed.Next(0, 3);
-			for (int j = 0; j < enemiesInSection;j++)
-			{
-				current.GetComponent<placeObject>().Place(enemyPrefab, offset);
-			}
-
-			offset += cellSize;
-		}
-
-
-
-
-	}
-
-	void placePuzzle(int puzzlePlace)
-	{
 		//get the puzzle for the room and blocks needed to complete
 		int rand = randomSeed.Next(0, puzzlePrefabs.Length);
 		GameObject puzzle = puzzlePrefabs[rand];
 		puzzBlox = puzzle.GetComponent<BlocksRequired>().blocksRequired;
-		int numBlox = puzzBlox.Length;
-		int currentBlock = 0;
 
+		placeSections(puzzlePlace, level); //place sections before puzzle
+
+		//place puzzle and increment offset
+		GameObject o = Instantiate(puzzle, new Vector2(offset, 0), Quaternion.identity);
+		o.transform.parent = this.transform;
+		if ((level % 2) == 0)
+		{
+			offset -= cellSize;
+			o.transform.localScale = new Vector2(o.transform.localScale.x * -1, o.transform.localScale.y);
+		}
+		else
+		{
+			offset += cellSize;
+		}
+
+		//calculate remaining sections and place remaining sections
+		int sectionsLeft = sectionsWide - puzzlePlace;
+		placeSections(sectionsLeft, level);
+
+		return;
+	}
+
+	void placeSections(int number, int level)
+	{
+		int currentBlock = 0;
+		int numBlox = puzzBlox.Length;
 		//pick starting room section
-		rand = randomSeed.Next(0, sectionPrefabs.Length);
+		int rand = randomSeed.Next(0, sectionPrefabs.Length);
 		GameObject next = sectionPrefabs[rand];
 
-		for (int i = 0; i < puzzlePlace; i++) //place level sections up until puzzle placement
+		for (int i = 0; i < number; i++) //place level sections up until puzzle placement
 		{
-			GameObject current = Instantiate(next, new Vector2(offset, 0), Quaternion.identity); //place section
+			GameObject current;
+			current = Instantiate(next, new Vector2(offset, 0), Quaternion.identity); //place section
 			current.transform.parent = this.transform;
+
+			if ((level % 2) == 0) //first section needs force flipped
+				//current.transform.localScale.Set(-1f,1f,1f);
+				current.transform.localScale = new Vector2(current.transform.localScale.x * -1f, current.transform.localScale.y);
+
 			//Block placement logic
 			int blocksInSection = randomSeed.Next(1, 2);
 			for (int j = 0; j < blocksInSection; j++)
 			{
-				if (i == puzzlePlace - 1 && currentBlock < numBlox - 1) //last section before puzzle and not all blocks required are placed
+				if (i == number - 1 && currentBlock < numBlox - 1) //last section before puzzle and not all blocks required are placed
 				{
 					while (currentBlock < numBlox)
 					{
@@ -123,25 +111,28 @@ public class roomGeneration : MonoBehaviour {
 				}
 			}
 
-
 			//Enemy placement logic
 			int enemiesInSection = randomSeed.Next(0, 3);
-			for (int j = 0; j < enemiesInSection;j++)
+			for (int j = 0; j < enemiesInSection; j++)
 			{
 				current.GetComponent<placeObject>().Place(enemyPrefab, offset);
 			}
 
+			//increment offset based on level
+			if ((level % 2) == 0)
+			{
+				offset -= cellSize;
+			}
+			else
+			{
+				offset += cellSize;
+			}
 
+			//choose next section to place
 			rand = randomSeed.Next(0, sectionPrefabs.Length);
 			next = sectionPrefabs[rand];
-			offset += cellSize;
 		}
-
-		//place puzzle and increment offset
-		GameObject o = Instantiate(puzzle, new Vector2(offset, 0), Quaternion.identity);
-		o.transform.parent = this.transform;
-		offset += (cellSize);
-
 		return;
 	}
+
 }

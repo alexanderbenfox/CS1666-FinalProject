@@ -36,16 +36,16 @@ public class placeObject : MonoBehaviour {
 	}
 
 	//Places character all the way to the left or right
-	public void PlaceChar(GameObject obj, int level)
+	public void PlaceDoor(GameObject obj, int level)
 	{
 		int index;
-		if (level % 2 != 0) //odd levels start at the left
-		{
-			index = 0;
-		}
-		else // even will start at right
+		if (level % 2 != 0) //odd levels door is at the right
 		{
 			index = objLocations.Length - 1;
+		}
+		else // even door is at far left
+		{
+			index = 0;
 		}
 		objAbove[index] = true;
 		validIndex(index, obj);

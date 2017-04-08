@@ -42,7 +42,7 @@ public class roomGeneration : MonoBehaviour {
 		GameObject puzzle = puzzlePrefabs[rand];
 		puzzBlox = puzzle.GetComponent<BlocksRequired>().blocksRequired;
 
-		placeSections(puzzlePlace, level); //place sections before puzzle
+		placeSections(puzzlePlace, level, 0); //place sections before puzzle
 
 		//place puzzle and increment offset
 		GameObject o = Instantiate(puzzle, new Vector2(offset, 0), Quaternion.identity);
@@ -59,12 +59,12 @@ public class roomGeneration : MonoBehaviour {
 
 		//calculate remaining sections and place remaining sections
 		int sectionsLeft = sectionsWide - puzzlePlace;
-		placeSections(sectionsLeft, level);
+		placeSections(sectionsLeft, level, (puzzlePlace));
 
 		return;
 	}
 
-	void placeSections(int number, int level)
+	void placeSections(int number, int level, int roomPlace)
 	{
 		int currentBlock = 0;
 		int numBlox = puzzBlox.Length;
@@ -76,12 +76,14 @@ public class roomGeneration : MonoBehaviour {
 		{
 			GameObject current;
 			current = Instantiate(next, new Vector2(offset, 0), Quaternion.identity); //place section
+			placeObject placer = current.GetComponent<placeObject>();
 			current.transform.parent = this.transform;
 
 			if ((level % 2) == 0) //first section needs force flipped
-				//current.transform.localScale.Set(-1f,1f,1f);
 				current.transform.localScale = new Vector2(current.transform.localScale.x * -1f, current.transform.localScale.y);
 
+			if (i + roomPlace == sectionsWide)
+				placer.PlaceDoor(door, level);
 			//Block placement logic
 			int blocksInSection = randomSeed.Next(1, 2);
 			for (int j = 0; j < blocksInSection; j++)
@@ -90,7 +92,7 @@ public class roomGeneration : MonoBehaviour {
 				{
 					while (currentBlock < numBlox)
 					{
-						current.GetComponent<placeObject>().Place(puzzBlox[currentBlock], offset);
+						placer.Place(puzzBlox[currentBlock], offset, level);
 						currentBlock++;
 					}
 					break;
@@ -100,13 +102,13 @@ public class roomGeneration : MonoBehaviour {
 					rand = randomSeed.Next(1, 11);
 					if (rand < 6 && currentBlock < numBlox) //place a block required by the puzzle
 					{
-						current.GetComponent<placeObject>().Place(puzzBlox[currentBlock], offset);
+						placer.Place(puzzBlox[currentBlock], offset,level);
 						currentBlock++;
 					}
 					else //choose a random block
 					{
 						rand = randomSeed.Next(0, specialBlox.Length);
-						current.GetComponent<placeObject>().Place(specialBlox[rand], offset);
+						placer.Place(specialBlox[rand], offset, level);
 					}
 				}
 			}
@@ -115,7 +117,7 @@ public class roomGeneration : MonoBehaviour {
 			int enemiesInSection = randomSeed.Next(0, 3);
 			for (int j = 0; j < enemiesInSection; j++)
 			{
-				current.GetComponent<placeObject>().Place(enemyPrefab, offset);
+				placer.Place(enemyPrefab, offset,level);
 			}
 
 			//increment offset based on level

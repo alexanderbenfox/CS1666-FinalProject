@@ -157,10 +157,10 @@ public class PhysicsObject : MonoBehaviour {
 		float raySpacing_y = ((this.box.top - this.box.bottom) / (float)numRays);
 		float rayOffset_y = raySpacing_y;
 
-		Debug.Log (raySpacing_x);
-		Debug.Log (raySpacing_y);
-		Debug.Log (rayOffset_x);
-		Debug.Log (rayOffset_y);
+		//Debug.Log (raySpacing_x);
+		//Debug.Log (raySpacing_y);
+		//Debug.Log (rayOffset_x);
+		//Debug.Log (rayOffset_y);
 
 		float i = (this.box.left+rayOffset_x);
 		while ( i < (this.box.right-rayOffset_x)) {

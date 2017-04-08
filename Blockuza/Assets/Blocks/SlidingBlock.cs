@@ -56,13 +56,13 @@ public class SlidingBlock : BlockBehaviour {
 		if (moving) {
 			gameObject.GetComponent<PhysicsObject> ().Move ((direction * slideDistance * speed), 0);
 			if (gameObject.GetComponent<PhysicsObject> ().checkRightCollision ()&&direction ==1) {
-				Debug.Log ("Right Collision");
+				//Debug.Log ("Right Collision");
 				moving = false;
 
 
 			}
 			if (gameObject.GetComponent<PhysicsObject> ().checkLeftCollision () && direction == -1) {
-				Debug.Log ("Left Collision");
+				//Debug.Log ("Left Collision");
 				moving = false;
 
 
@@ -70,12 +70,12 @@ public class SlidingBlock : BlockBehaviour {
 		} else if (!moving && moving2) {
 			gameObject.GetComponent<PhysicsObject> ().Move ((direction * slideDistance * speed), 0);
 			if (gameObject.GetComponent<PhysicsObject> ().checkRightCollision () && direction == 1) {
-				Debug.Log ("Right Collision 2");
+				//Debug.Log ("Right Collision 2");
 				moving2 = false;
 
 
 			} else if (gameObject.GetComponent<PhysicsObject> ().checkLeftCollision () && direction == -1) {
-				Debug.Log ("Left Collision 2");
+				//Debug.Log ("Left Collision 2");
 				moving2 = false;
 
 

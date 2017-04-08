@@ -65,7 +65,7 @@ public class EnemyScript : MonoBehaviour {
 		if (hit.collider == null) {
 			return true;
 		} else {
-			Debug.Log (hit.collider.gameObject.name);
+			//Debug.Log (hit.collider.gameObject.name);
 			return false;
 		}
 	}

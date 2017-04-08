@@ -9,7 +9,7 @@ public class placeObject : MonoBehaviour {
 	private float x; // x axis offset
 
 	// Finds index to place the object, then calls validIndex() to place it
-	public void Place (GameObject obj, float offset) 
+	public void Place (GameObject obj, float offset, int level) 
 	{
 		x = offset;
 		System.Random rand = new System.Random();
@@ -20,7 +20,7 @@ public class placeObject : MonoBehaviour {
 			if (objAbove[index] == false) //nothing above this square, so place the object
 			{
 				objAbove[index] = true;
-				validIndex(index, obj);
+				validIndex(index, obj, level);
 				found = true;
 			}
 			else //try next index
@@ -36,31 +36,33 @@ public class placeObject : MonoBehaviour {
 	}
 
 	//Places character all the way to the left or right
-	public void PlaceDoor(GameObject obj, int level)
+	public void PlaceDoor(GameObject door, int level)
 	{
-		int index;
-		if (level % 2 != 0) //odd levels door is at the right
-		{
-			index = objLocations.Length - 1;
-		}
-		else // even door is at far left
-		{
-			index = 0;
-		}
+		int index = objLocations.Length - 1;
 		objAbove[index] = true;
-		validIndex(index, obj);
+		validIndex(index, door,level);
 		return;
 	}
 
 	// Instantiates the object above coords of index found in Place()
-	private void validIndex(int index, GameObject obj)
+	private void validIndex(int index, GameObject obj, int level)
 	{
 		int[] coords = getCoords(objLocations[index]);
 
-		float xx = x + (.32f * (float)coords[0]);
+		float xx;
 		float yy = .32f * (float)(coords[1] + 1);
 
-		GameObject c = Instantiate(obj, new Vector2(xx, yy), Quaternion.identity);
+		GameObject c;
+		if (level % 2 == 0)
+		{
+			xx = x - (.32f * (float)coords[0]);
+			c = Instantiate(obj, new Vector2(xx, yy), Quaternion.identity);
+		}
+		else
+		{
+			xx = x + (.32f * (float)coords[0]);
+			c = Instantiate(obj, new Vector2(xx, yy), Quaternion.identity); 
+		}
 		c.transform.parent = this.transform;
 		return;
 	}

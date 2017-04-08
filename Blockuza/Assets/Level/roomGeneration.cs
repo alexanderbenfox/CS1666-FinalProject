@@ -59,7 +59,7 @@ public class roomGeneration : MonoBehaviour {
 
 		//calculate remaining sections and place remaining sections
 		int sectionsLeft = sectionsWide - puzzlePlace;
-		placeSections(sectionsLeft, level, (puzzlePlace));
+		placeSections(sectionsLeft, level, (puzzlePlace+1));
 
 		return;
 	}
@@ -81,9 +81,7 @@ public class roomGeneration : MonoBehaviour {
 
 			if ((level % 2) == 0) //first section needs force flipped
 				current.transform.localScale = new Vector2(current.transform.localScale.x * -1f, current.transform.localScale.y);
-
-			if (i + roomPlace == sectionsWide)
-				placer.PlaceDoor(door, level);
+			
 			//Block placement logic
 			int blocksInSection = randomSeed.Next(1, 2);
 			for (int j = 0; j < blocksInSection; j++)
@@ -129,6 +127,9 @@ public class roomGeneration : MonoBehaviour {
 			{
 				offset += cellSize;
 			}
+
+			if (i + roomPlace == sectionsWide) //place door if last section in room
+				placer.PlaceDoor(door, level);
 
 			//choose next section to place
 			rand = randomSeed.Next(0, sectionPrefabs.Length);

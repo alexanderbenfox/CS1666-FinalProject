@@ -13,19 +13,17 @@ public class makeBlock : MonoBehaviour {
 		selector = this.GetComponentInChildren<TileSelector> ();
 	}
 	void Update(){
-		if (controller.checkKeyPressed(Keys.ACTION)) {
+		if (Input.GetMouseButtonDown(0)) {
 			if (selector.consume) {
-				controller.pickingBlock = true;
-				controller.anim.Play ("TakeBlock");
 				selector.consumeBlock ();
+				selector.consume = false;
 			} else {
-				controller.pickingBlock = true;
-				controller.anim.Play ("ReleaseBlock");
 				SpawnBlock (selector.transform.position);
 			}
 		}
 	}
 	public void SpawnBlock(Vector3 position){
+		Debug.Log ("Block Count: " + selector.savedBlocks.Count);
 		if (selector.savedBlocks.Count > 0) {
 			BlockType[] blockList = selector.savedBlocks.ToArray();
 			BlockType newBlock = blockList [selector.savedBlocks.Count - 1];

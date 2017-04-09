@@ -17,11 +17,15 @@ public class Controller : MonoBehaviour
 	public Direction lastDirection = Direction.RIGHT; //used in destroyable block placement
 
 	private PhysicsObject physics;
-	private Animator anim;
+	public Animator anim;
 	private SpriteRenderer sprite;
 	private InputControl input;
 	public ControlType control;
 	private TimeStuff time;
+
+	public bool pickingBlock;
+	public float blockTime;
+	public float blockTimeMax;
 
 	public Camera c;
 
@@ -149,6 +153,22 @@ public class Controller : MonoBehaviour
 			physics.effectedByGravity = false;
 			physics.Move(0, 0);
 		}
+
+		if (!pickingBlock) {
+			if (!physics.checkGrounded ()) {
+				if (physics.getdy () > 0) {
+					anim.Play ("Jump");
+				} else {
+					anim.Play ("Fall");
+				}
+			}
+			blockTime = blockTimeMax;
+		} else {
+			blockTime -= Time.deltaTime;
+			if (blockTime < 0) {
+				pickingBlock = false;
+			}
+		}
 	}
 
 	public void Move()
@@ -172,10 +192,12 @@ public class Controller : MonoBehaviour
 		if (input.keysPressed.Contains(Keys.JUMP) && physics.checkGrounded())
 			y = 5;
 
-		if (x == 0)
-			anim.Play("Idle");
-		else
-			anim.Play("Run");
+		if (physics.checkGrounded () && !pickingBlock) {
+			if (x == 0)
+				anim.Play ("Idle");
+			else
+				anim.Play ("Run");
+		}
 
 		physics.Move(x, y);
 	}

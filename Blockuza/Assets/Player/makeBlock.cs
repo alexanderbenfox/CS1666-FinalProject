@@ -15,8 +15,12 @@ public class makeBlock : MonoBehaviour {
 	void Update(){
 		if (controller.checkKeyPressed(Keys.ACTION)) {
 			if (selector.consume) {
+				controller.pickingBlock = true;
+				controller.anim.Play ("TakeBlock");
 				selector.consumeBlock ();
 			} else {
+				controller.pickingBlock = true;
+				controller.anim.Play ("ReleaseBlock");
 				SpawnBlock (selector.transform.position);
 			}
 		}

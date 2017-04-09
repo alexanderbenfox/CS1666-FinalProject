@@ -97,10 +97,10 @@ public class TileSelector : MonoBehaviour {
 	void FixedUpdate () {
 		moveCursor ();
 
-		/*if (savedBlock == null) {
+		if (savedBlock == null) {
 			consume = false;
 		}
 
-		savedBlock = null;*/
+		//savedBlock = null;*/
 	}
 }

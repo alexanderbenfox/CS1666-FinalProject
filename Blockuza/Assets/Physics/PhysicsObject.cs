@@ -343,4 +343,12 @@ public class PhysicsObject : MonoBehaviour {
 	public bool checkTopCollision(){
 		return _top;
 	}
+
+	public float getdx(){
+		return _dx;
+	}
+
+	public float getdy(){
+		return _dy;
+	}
 }

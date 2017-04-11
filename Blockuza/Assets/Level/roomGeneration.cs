@@ -9,12 +9,14 @@ public class roomGeneration : MonoBehaviour {
 	public GameObject[] puzzlePrefabs;
 	public GameObject[] specialBlox;
 	public GameObject enemyPrefab;
+	public GameObject mainChar;
 	public GameObject door;
 	public int sectionsWide; //total length is sectionsWide x 10
 	//private int level=1; // will determine if left to right, or right to left
-	public int lev = 1;
-	//public int numPuzzles; //number of puzzles in the room
+	public int lev = 1; 
+	private int roomNumber = 1;
 
+	//public int numPuzzles; //number of puzzles in the room
 
 	private float cellSize = 6.4f; // 10 blocks x .32 wide
 	private GameObject[] puzzBlox;
@@ -25,13 +27,15 @@ public class roomGeneration : MonoBehaviour {
 	// Use this for initialization
 	void Start () 
 	{
+		//mainChar = GameObject.FindGameObjectWithTag("Player");
 		GenerateRoom(lev);
 	}
 
 	
 	// Pick where the puzzle is in the room, place sections before and after it
-	void GenerateRoom(int level) 
+	public void GenerateRoom(int level) 
 	{
+		Debug.Log("Generating");
 		numEnemies = randomSeed.Next(1, sectionsWide);
 		offset = 0f;
 
@@ -136,6 +140,36 @@ public class roomGeneration : MonoBehaviour {
 			next = sectionPrefabs[rand];
 		}
 		return;
+	}
+
+	public void NextRoom()
+	{
+		if (roomNumber == 3)
+		{
+			roomNumber = 1;
+			lev++;
+		}
+		else
+		{
+			roomNumber++;
+		}
+		//mainChar.SetActive(false);
+		mainChar.transform.position = new Vector2(0f, 0.64f);//place character back at start of room
+		Debug.Log("Main character x:"+mainChar.transform.position.x);
+		Debug.Log("Main character y:" + mainChar.transform.position.y);
+
+		// Deletes room
+		Debug.Log("Deleting Children");
+		foreach (Transform child in this.transform)
+		{
+			Destroy(child.gameObject);
+		}
+		Debug.Log("Children deleted");
+
+		GenerateRoom(lev); //generate the room
+		Debug.Log("New Room Generated");
+
+		mainChar.SetActive(true);
 	}
 
 }

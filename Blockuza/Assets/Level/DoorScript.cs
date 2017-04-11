@@ -4,26 +4,23 @@ using UnityEngine;
 
 public class DoorScript : MonoBehaviour {
 
-	public Transform mainChar;
-	private int roomNum = 1;
-	private int Level = 1;
+	private bool hit = false;
 
-	private GameObject current;
+	private GameObject room;
 	//// Use this for initialization
 	void Start () {
+		room = GameObject.FindGameObjectWithTag("Room");
+
 	}
 
 
 	void OnTriggerEnter2D(Collider2D col)
 	{
-		if (roomNum == 3)
+		Debug.Log("Door hit");
+
+		if (col.tag == "Player" && !hit)
 		{
-			roomNum = 1;
-			Level++;
-		}
-		else
-		{
-			roomNum++;
+			room.GetComponent<roomGeneration>().NextRoom();
 		}
 			
 

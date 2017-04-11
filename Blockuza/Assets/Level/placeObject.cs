@@ -40,7 +40,6 @@ public class placeObject : MonoBehaviour {
 	{
 		int index = objLocations.Length - 1;
 		objAbove[index] = true;
-		Debug.Log("door index: " + index);
 		validIndex(index, door,level);
 		return;
 	}
@@ -64,7 +63,6 @@ public class placeObject : MonoBehaviour {
 			xx = x + (.32f * (float)coords[0]);
 			c = Instantiate(obj, new Vector2(xx, yy), Quaternion.identity); 
 		}
-		Debug.Log("x: " + xx + " y: " + yy);
 		c.transform.parent = this.transform;
 		return;
 	}

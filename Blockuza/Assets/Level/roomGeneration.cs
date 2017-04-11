@@ -11,6 +11,7 @@ public class roomGeneration : MonoBehaviour {
 	public GameObject enemyPrefab;
 	public GameObject mainChar;
 	public GameObject door;
+	public GameObject mapTrigger;
 	public int sectionsWide; //total length is sectionsWide x 10
 	public int Level = 1; 
 	public int roomNumber;
@@ -129,6 +130,10 @@ public class roomGeneration : MonoBehaviour {
 			{
 				placer.Place(enemyPrefab, offset,level);
 			}
+
+			//place map trigger under section
+			Instantiate(mapTrigger, new Vector2(offset, 0), Quaternion.identity).transform.parent = this.transform;
+
 
 			//increment offset based on level
 			if ((level % 2) == 0)

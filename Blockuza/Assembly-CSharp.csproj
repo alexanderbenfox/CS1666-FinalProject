@@ -49,8 +49,10 @@
      <Compile Include="Assets\Blocks\BlockBehaviour.cs" />
      <Compile Include="Assets\Blocks\SlidingBlock.cs" />
      <Compile Include="Assets\Blocks\StickBlock.cs" />
+     <Compile Include="Assets\Boss\BossBlock.cs" />
      <Compile Include="Assets\Enemy\EnemyScript.cs" />
      <Compile Include="Assets\GUI\BlockStack.cs" />
+     <Compile Include="Assets\GUI\RoomUIscript.cs" />
      <Compile Include="Assets\Level\DoorScript.cs" />
      <Compile Include="Assets\Level\Puzzles\BlocksRequired.cs" />
      <Compile Include="Assets\Level\Puzzles\ChasmPuzzle\ChasmPuzzle.cs" />
@@ -60,7 +62,6 @@
      <Compile Include="Assets\Level\Puzzles\Puzzles\Puzzle4.cs" />
      <Compile Include="Assets\Level\Puzzles\Puzzles\Puzzle5.cs" />
      <Compile Include="Assets\Level\Puzzles\Puzzles\RightWallTrigger.cs" />
-     <Compile Include="Assets\Level\RoomUIscript.cs" />
      <Compile Include="Assets\Level\SnapToGrid.cs" />
      <Compile Include="Assets\Level\placeObject.cs" />
      <Compile Include="Assets\Level\roomGeneration.cs" />

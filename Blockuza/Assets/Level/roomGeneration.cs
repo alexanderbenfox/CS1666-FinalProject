@@ -13,7 +13,7 @@ public class roomGeneration : MonoBehaviour {
 	public GameObject door;
 	public int sectionsWide; //total length is sectionsWide x 10
 	public int Level = 1; 
-	public int roomNumber = 1;
+	public int roomNumber;
 
 	//public int numPuzzles; //number of puzzles in the room
 
@@ -21,19 +21,23 @@ public class roomGeneration : MonoBehaviour {
 	private GameObject[] puzzBlox;
 	private System.Random randomSeed = new System.Random();
 	private float offset;
-	private GameObject roomUI;
+	public GameObject roomUI;
+	//private GameObject roomUI;
 	//private int numEnemies;
 
 	// Use this for initialization
-	void Start () 
-	{
-		roomUI = GameObject.FindGameObjectWithTag("RoomUI");
-		roomUI.SetActive(true);
-	}
 
 	void OnEnable()
 	{
-		GenerateRoom(Level);
+		if (roomNumber == 0)
+		{
+			roomNumber++;
+			roomUI.SetActive(true);
+		}
+		else
+		{
+			GenerateRoom(Level);
+		}
 	}
 	// Pick where the puzzle is in the room, place sections before and after it
 	public void GenerateRoom(int level) 
@@ -68,7 +72,7 @@ public class roomGeneration : MonoBehaviour {
 		int sectionsLeft = sectionsWide - puzzlePlace;
 		placeSections(sectionsLeft, level, (puzzlePlace+1));
 
-		roomUI.SetActive(false);
+
 		return;
 	}
 
@@ -157,23 +161,16 @@ public class roomGeneration : MonoBehaviour {
 		{
 			roomNumber++;
 		}
-		//mainChar.SetActive(false);
 		mainChar.transform.position = new Vector2(0f, 0.64f);//place character back at start of room
-		Debug.Log("Main character x:"+mainChar.transform.position.x);
-		Debug.Log("Main character y:" + mainChar.transform.position.y);
 
 		// Deletes room
-		Debug.Log("Deleting Children");
 		foreach (Transform child in this.transform)
 		{
 			Destroy(child.gameObject);
 		}
-		Debug.Log("Children deleted");
 
-		GenerateRoom(Level); //generate the room
-		Debug.Log("New Room Generated");
-
-		mainChar.SetActive(true);
+		roomUI.SetActive(true);
+		Debug.Log("UI active?"+roomUI.activeInHierarchy);
 	}
 
 }

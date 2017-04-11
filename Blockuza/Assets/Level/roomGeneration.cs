@@ -12,6 +12,7 @@ public class roomGeneration : MonoBehaviour {
 	public GameObject mainChar;
 	public GameObject door;
 	public GameObject mapTrigger;
+	public GameObject PlacedBlocks;
 	public int sectionsWide; //total length is sectionsWide x 10
 	public int Level = 1; 
 	public int roomNumber;
@@ -56,9 +57,12 @@ public class roomGeneration : MonoBehaviour {
 
 		placeSections(puzzlePlace, level, 0); //place sections before puzzle
 
-		//place puzzle and increment offset
+		//place puzzle
 		GameObject o = Instantiate(puzzle, new Vector2(offset, 0), Quaternion.identity);
 		o.transform.parent = this.transform;
+		//Put map trigger under
+		Instantiate(mapTrigger, new Vector2(offset, 0), Quaternion.identity).transform.parent = this.transform;
+		//increment offset
 		if ((level % 2) == 0)
 		{
 			offset -= cellSize;
@@ -170,6 +174,10 @@ public class roomGeneration : MonoBehaviour {
 
 		// Deletes room
 		foreach (Transform child in this.transform)
+		{
+			Destroy(child.gameObject);
+		}
+		foreach (Transform child in PlacedBlocks.transform)
 		{
 			Destroy(child.gameObject);
 		}

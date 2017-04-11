@@ -12,9 +12,8 @@ public class roomGeneration : MonoBehaviour {
 	public GameObject mainChar;
 	public GameObject door;
 	public int sectionsWide; //total length is sectionsWide x 10
-	//private int level=1; // will determine if left to right, or right to left
-	public int lev = 1; 
-	private int roomNumber = 1;
+	public int Level = 1; 
+	public int roomNumber = 1;
 
 	//public int numPuzzles; //number of puzzles in the room
 
@@ -22,21 +21,25 @@ public class roomGeneration : MonoBehaviour {
 	private GameObject[] puzzBlox;
 	private System.Random randomSeed = new System.Random();
 	private float offset;
-	private int numEnemies;
+	private GameObject roomUI;
+	//private int numEnemies;
 
 	// Use this for initialization
 	void Start () 
 	{
-		//mainChar = GameObject.FindGameObjectWithTag("Player");
-		GenerateRoom(lev);
+		roomUI = GameObject.FindGameObjectWithTag("RoomUI");
+		roomUI.SetActive(true);
 	}
 
-	
+	void OnEnable()
+	{
+		GenerateRoom(Level);
+	}
 	// Pick where the puzzle is in the room, place sections before and after it
 	public void GenerateRoom(int level) 
 	{
 		Debug.Log("Generating");
-		numEnemies = randomSeed.Next(1, sectionsWide);
+		//numEnemies = randomSeed.Next(1, sectionsWide);
 		offset = 0f;
 
 		int puzzlePlace = randomSeed.Next(1, sectionsWide); //choose where puzzle will be in relation to the room
@@ -65,6 +68,7 @@ public class roomGeneration : MonoBehaviour {
 		int sectionsLeft = sectionsWide - puzzlePlace;
 		placeSections(sectionsLeft, level, (puzzlePlace+1));
 
+		roomUI.SetActive(false);
 		return;
 	}
 
@@ -147,7 +151,7 @@ public class roomGeneration : MonoBehaviour {
 		if (roomNumber == 3)
 		{
 			roomNumber = 1;
-			lev++;
+			Level++;
 		}
 		else
 		{
@@ -166,7 +170,7 @@ public class roomGeneration : MonoBehaviour {
 		}
 		Debug.Log("Children deleted");
 
-		GenerateRoom(lev); //generate the room
+		GenerateRoom(Level); //generate the room
 		Debug.Log("New Room Generated");
 
 		mainChar.SetActive(true);

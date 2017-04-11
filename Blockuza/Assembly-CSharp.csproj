@@ -60,6 +60,7 @@
      <Compile Include="Assets\Level\Puzzles\Puzzles\Puzzle4.cs" />
      <Compile Include="Assets\Level\Puzzles\Puzzles\Puzzle5.cs" />
      <Compile Include="Assets\Level\Puzzles\Puzzles\RightWallTrigger.cs" />
+     <Compile Include="Assets\Level\RoomUIscript.cs" />
      <Compile Include="Assets\Level\SnapToGrid.cs" />
      <Compile Include="Assets\Level\placeObject.cs" />
      <Compile Include="Assets\Level\roomGeneration.cs" />

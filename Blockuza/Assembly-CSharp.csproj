@@ -52,9 +52,14 @@
      <Compile Include="Assets\Boss\BossBlock.cs" />
      <Compile Include="Assets\Enemy\EnemyScript.cs" />
      <Compile Include="Assets\GUI\BlockStack.cs" />
+<<<<<<< HEAD
+     <Compile Include="Assets\GUI\RoomUIscript.cs" />
+=======
      <Compile Include="Assets\Level\BackgroundAssets\BackgroundImages\BackgroundContianer.cs" />
      <Compile Include="Assets\Level\BackgroundAssets\SceneryImages\BackgroundObjects.cs" />
+>>>>>>> a58f0c1cad92b126bc9f8fd04f21b758f1800f85
      <Compile Include="Assets\Level\DoorScript.cs" />
+     <Compile Include="Assets\Level\MapTrigger.cs" />
      <Compile Include="Assets\Level\Puzzles\BlocksRequired.cs" />
      <Compile Include="Assets\Level\Puzzles\ChasmPuzzle\ChasmPuzzle.cs" />
      <Compile Include="Assets\Level\Puzzles\Puzzle.cs" />
@@ -63,19 +68,28 @@
      <Compile Include="Assets\Level\Puzzles\Puzzles\Puzzle4.cs" />
      <Compile Include="Assets\Level\Puzzles\Puzzles\Puzzle5.cs" />
      <Compile Include="Assets\Level\Puzzles\Puzzles\RightWallTrigger.cs" />
-     <Compile Include="Assets\Level\RoomUIscript.cs" />
      <Compile Include="Assets\Level\SnapToGrid.cs" />
      <Compile Include="Assets\Level\placeObject.cs" />
      <Compile Include="Assets\Level\roomGeneration.cs" />
      <Compile Include="Assets\Physics\PhysicsObject.cs" />
      <Compile Include="Assets\Player\CameraControl.cs" />
+     <Compile Include="Assets\Player\CameraFix.cs" />
      <Compile Include="Assets\Player\Controller.cs" />
      <Compile Include="Assets\Player\InputControl.cs" />
      <Compile Include="Assets\Player\TileSelector.cs" />
      <Compile Include="Assets\Player\TimeStuff.cs" />
      <Compile Include="Assets\Player\makeBlock.cs" />
+     <Compile Include="Assets\Shader\CameraEffect.cs" />
      <Compile Include="Assets\StartMenu\PlayButton.cs" />
      <Compile Include="Assets\StartMenu\StartMenuManager.cs" />
+<<<<<<< HEAD
+ <Reference Include="UnityEngine.Advertisements">
+ <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/Advertisements/UnityEngine.Advertisements.dll</HintPath>
+ </Reference>
+=======
+     <None Include="Assets\Shader\VHSShader(NOTMINE).shader" />
+     <None Include="Assets\Shader\RippleEffect.shader" />
+>>>>>>> a58f0c1cad92b126bc9f8fd04f21b758f1800f85
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
@@ -90,6 +104,9 @@
  </Reference>
  <Reference Include="UnityEngine.HoloLens">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnityHoloLens/RuntimeEditor/UnityEngine.HoloLens.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEngine.Purchasing">
+ <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnityPurchasing/UnityEngine.Purchasing.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.VR">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnityVR/RuntimeEditor/UnityEngine.VR.dll</HintPath>

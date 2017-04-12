@@ -60,7 +60,7 @@ public class BackgroundContianer : MonoBehaviour {
 
 				blankPrefab.GetComponent<SpriteRenderer> ().sprite = instantiationSprite;
 				blankPrefab.GetComponent<SpriteRenderer> ().sortingOrder = -4;
-				Vector2 pos = new Vector2 ((float)x * .32f, (float)y * .32f);
+				Vector2 pos = new Vector2 ((float)x * .32f, (float)(y+1) * .32f);
 				Instantiate (blankPrefab, pos, Quaternion.identity);
 			}
 		}

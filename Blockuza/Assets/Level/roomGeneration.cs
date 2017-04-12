@@ -11,9 +11,11 @@ public class roomGeneration : MonoBehaviour {
 	public GameObject enemyPrefab;
 	public GameObject mainChar;
 	public GameObject door;
+	public GameObject mapTrigger;
+	public GameObject PlacedBlocks;
 	public int sectionsWide; //total length is sectionsWide x 10
 	public int Level = 1; 
-	public int roomNumber = 1;
+	public int roomNumber;
 
 	public BackgroundObjects backgroundObjects;
 
@@ -23,20 +25,28 @@ public class roomGeneration : MonoBehaviour {
 	private GameObject[] puzzBlox;
 	private System.Random randomSeed = new System.Random();
 	private float offset;
-	private GameObject roomUI;
+	public GameObject roomUI;
+	//private GameObject roomUI;
 	//private int numEnemies;
 
 	// Use this for initialization
-	void Start () 
-	{
-		roomUI = GameObject.FindGameObjectWithTag("RoomUI");
-		roomUI.SetActive(true);
-	}
 
 	void OnEnable()
 	{
+<<<<<<< HEAD
+		if (roomNumber == 0)
+		{
+			roomNumber++;
+			roomUI.SetActive(true);
+		}
+		else
+		{
+			GenerateRoom(Level);
+		}
+=======
 		GenerateRoom(Level);
 		backgroundObjects.placeWallPapers ();
+>>>>>>> a58f0c1cad92b126bc9f8fd04f21b758f1800f85
 	}
 	// Pick where the puzzle is in the room, place sections before and after it
 	public void GenerateRoom(int level) 
@@ -54,9 +64,12 @@ public class roomGeneration : MonoBehaviour {
 
 		placeSections(puzzlePlace, level, 0); //place sections before puzzle
 
-		//place puzzle and increment offset
+		//place puzzle
 		GameObject o = Instantiate(puzzle, new Vector2(offset, 0), Quaternion.identity);
 		o.transform.parent = this.transform;
+		//Put map trigger under
+		Instantiate(mapTrigger, new Vector2(offset, 0), Quaternion.identity).transform.parent = this.transform;
+		//increment offset
 		if ((level % 2) == 0)
 		{
 			offset -= cellSize;
@@ -71,7 +84,11 @@ public class roomGeneration : MonoBehaviour {
 		int sectionsLeft = sectionsWide - puzzlePlace;
 		placeSections(sectionsLeft, level, (puzzlePlace+1));
 
+<<<<<<< HEAD
+
+=======
 		//roomUI.SetActive(false);
+>>>>>>> a58f0c1cad92b126bc9f8fd04f21b758f1800f85
 		return;
 	}
 
@@ -129,6 +146,10 @@ public class roomGeneration : MonoBehaviour {
 				placer.Place(enemyPrefab, offset,level);
 			}
 
+			//place map trigger under section
+			Instantiate(mapTrigger, new Vector2(offset, 0), Quaternion.identity).transform.parent = this.transform;
+
+
 			//increment offset based on level
 			if ((level % 2) == 0)
 			{
@@ -160,23 +181,20 @@ public class roomGeneration : MonoBehaviour {
 		{
 			roomNumber++;
 		}
-		//mainChar.SetActive(false);
 		mainChar.transform.position = new Vector2(0f, 0.64f);//place character back at start of room
-		Debug.Log("Main character x:"+mainChar.transform.position.x);
-		Debug.Log("Main character y:" + mainChar.transform.position.y);
 
 		// Deletes room
-		Debug.Log("Deleting Children");
 		foreach (Transform child in this.transform)
 		{
 			Destroy(child.gameObject);
 		}
-		Debug.Log("Children deleted");
+		foreach (Transform child in PlacedBlocks.transform)
+		{
+			Destroy(child.gameObject);
+		}
 
-		GenerateRoom(Level); //generate the room
-		Debug.Log("New Room Generated");
-
-		mainChar.SetActive(true);
+		roomUI.SetActive(true);
+		Debug.Log("UI active?"+roomUI.activeInHierarchy);
 	}
 
 }

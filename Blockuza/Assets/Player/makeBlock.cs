@@ -5,6 +5,7 @@ using UnityEngine;
 public class makeBlock : MonoBehaviour {
 	public GameObject DestroyBlockPrefab,SlideBlockPrefab,StickyBlockPrefab;
 	public Controller controller;
+	public Transform PlacedBlocks;
 	private TileSelector selector;
 
 	// Use this for initialization
@@ -31,10 +32,13 @@ public class makeBlock : MonoBehaviour {
 			GameObject blockInst;
 			if (newBlock == BlockType.Sliding) {
 				blockInst = Instantiate (SlideBlockPrefab, position, gameObject.transform.rotation);
+				blockInst.transform.parent = PlacedBlocks; 
 			}else if (newBlock == BlockType.Sticky) {
 				blockInst = Instantiate (StickyBlockPrefab, position, gameObject.transform.rotation);
+				blockInst.transform.parent = PlacedBlocks;
 			} else {
 				blockInst = Instantiate (DestroyBlockPrefab, position, gameObject.transform.rotation);
+				blockInst.transform.parent = PlacedBlocks;
 			}
 			blockInst.tag = "PlayerBlock";
 		}

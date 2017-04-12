@@ -14,7 +14,7 @@ public class RoomUIscript : MonoBehaviour {
 
 	void OnEnable()
 	{
-		Room.SetActive(false);
+		//Room.SetActive(false);
 		int level = Room.GetComponent<roomGeneration>().Level;
 		int room = Room.GetComponent<roomGeneration>().roomNumber;
 

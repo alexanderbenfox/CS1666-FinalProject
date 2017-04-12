@@ -15,6 +15,8 @@ public class roomGeneration : MonoBehaviour {
 	public int Level = 1; 
 	public int roomNumber = 1;
 
+	public BackgroundObjects backgroundObjects;
+
 	//public int numPuzzles; //number of puzzles in the room
 
 	private float cellSize = 6.4f; // 10 blocks x .32 wide
@@ -34,6 +36,7 @@ public class roomGeneration : MonoBehaviour {
 	void OnEnable()
 	{
 		GenerateRoom(Level);
+		backgroundObjects.placeWallPapers ();
 	}
 	// Pick where the puzzle is in the room, place sections before and after it
 	public void GenerateRoom(int level) 
@@ -68,7 +71,7 @@ public class roomGeneration : MonoBehaviour {
 		int sectionsLeft = sectionsWide - puzzlePlace;
 		placeSections(sectionsLeft, level, (puzzlePlace+1));
 
-		roomUI.SetActive(false);
+		//roomUI.SetActive(false);
 		return;
 	}
 

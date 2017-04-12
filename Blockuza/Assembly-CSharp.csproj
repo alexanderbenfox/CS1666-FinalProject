@@ -49,8 +49,11 @@
      <Compile Include="Assets\Blocks\BlockBehaviour.cs" />
      <Compile Include="Assets\Blocks\SlidingBlock.cs" />
      <Compile Include="Assets\Blocks\StickBlock.cs" />
+     <Compile Include="Assets\Boss\BossBlock.cs" />
      <Compile Include="Assets\Enemy\EnemyScript.cs" />
      <Compile Include="Assets\GUI\BlockStack.cs" />
+     <Compile Include="Assets\Level\BackgroundAssets\BackgroundImages\BackgroundContianer.cs" />
+     <Compile Include="Assets\Level\BackgroundAssets\SceneryImages\BackgroundObjects.cs" />
      <Compile Include="Assets\Level\DoorScript.cs" />
      <Compile Include="Assets\Level\Puzzles\BlocksRequired.cs" />
      <Compile Include="Assets\Level\Puzzles\ChasmPuzzle\ChasmPuzzle.cs" />

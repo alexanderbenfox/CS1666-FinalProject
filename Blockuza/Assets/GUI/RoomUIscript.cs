@@ -10,10 +10,15 @@ public class RoomUIscript : MonoBehaviour {
 	public Text txt;
 
 	void OnEnable()
+<<<<<<< HEAD:Blockuza/Assets/GUI/RoomUIscript.cs
 	{	
 		Room = GameObject.Find("Room");
 		Player = GameObject.Find("Player");
 		UI = GameObject.FindGameObjectWithTag("RoomUI");
+=======
+	{
+		//Room.SetActive(false);
+>>>>>>> a58f0c1cad92b126bc9f8fd04f21b758f1800f85:Blockuza/Assets/Level/RoomUIscript.cs
 		int level = Room.GetComponent<roomGeneration>().Level;
 		int room = Room.GetComponent<roomGeneration>().roomNumber;
 		Room.SetActive(false);

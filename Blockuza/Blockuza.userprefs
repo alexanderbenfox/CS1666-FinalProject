@@ -1,13 +1,13 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Player/makeBlock.cs">
     <Files>
-      <File FileName="Assets/Level/roomGeneration.cs" Line="64" Column="21" />
+      <File FileName="Assets/Level/roomGeneration.cs" Line="182" Column="30" />
       <File FileName="Assets/Level/DoorScript.cs" Line="15" Column="1" />
       <File FileName="Assets/GUI/RoomUIscript.cs" Line="27" Column="35" />
       <File FileName="Assets/Level/placeObject.cs" Line="50" Column="46" />
       <File FileName="Assets/Level/MapTrigger.cs" Line="15" Column="4" />
       <File FileName="Assets/Player/TileSelector.cs" Line="18" Column="25" />
-      <File FileName="Assets/Player/makeBlock.cs" Line="7" Column="31" />
+      <File FileName="Assets/Player/makeBlock.cs" Line="8" Column="2" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

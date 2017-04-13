@@ -67,4 +67,9 @@ public class BackgroundContianer : MonoBehaviour {
 		return rand;
 
 	}
+	public void destroyAttachedObjects(){
+		foreach (Transform child in transform) {
+			GameObject.Destroy(child.gameObject);
+		}
+	}
 }

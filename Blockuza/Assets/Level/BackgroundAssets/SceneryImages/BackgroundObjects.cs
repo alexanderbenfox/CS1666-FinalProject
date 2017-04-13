@@ -27,11 +27,11 @@ public class BackgroundObjects : MonoBehaviour {
 
 
 	void Awake(){
-		totalRoomSize = generator.sectionsWide * 20;
+		totalRoomSize = (generator.sectionsWide+1) * 20;
 	}
 
 	public void placeWallPapers(){
-		Vector2 roomSize = new Vector2 (80, 10);
+		Vector2 roomSize = new Vector2 (totalRoomSize, 10);
 		int partition = backgrounds.Place (roomSize);
 
 		int depth = -3;
@@ -66,12 +66,20 @@ public class BackgroundObjects : MonoBehaviour {
 						if ((float)y * .32f + offset < roomSize.y && (float)y * .32f - height + offset > 0) {
 							renderer.sortingOrder = depth;
 							Vector2 pos = new Vector2 ((float)x * .32f, (float)y * .32f);
-							Instantiate (blankPrefab, pos, Quaternion.identity);
+							GameObject n = Instantiate (blankPrefab, pos, Quaternion.identity) as GameObject;
+							n.transform.parent = this.transform;
 						}
 					}
 				}
 			}
 		}
+	}
+
+	public void destroyAttachedObjects(){
+		foreach (Transform child in transform) {
+			GameObject.Destroy(child.gameObject);
+		}
+		backgrounds.destroyAttachedObjects ();
 	}
 
 	public bool checkForGround(Vector2 checkPoint){

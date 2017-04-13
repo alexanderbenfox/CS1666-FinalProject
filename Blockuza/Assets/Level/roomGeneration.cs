@@ -41,6 +41,7 @@ public class roomGeneration : MonoBehaviour {
 		}
 		else
 		{
+			backgroundObjects.destroyAttachedObjects ();
 			GenerateRoom(Level);
 			backgroundObjects.placeWallPapers();
 		}

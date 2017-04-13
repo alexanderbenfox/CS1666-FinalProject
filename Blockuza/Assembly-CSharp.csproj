@@ -76,11 +76,8 @@
      <Compile Include="Assets\Player\TileSelector.cs" />
      <Compile Include="Assets\Player\TimeStuff.cs" />
      <Compile Include="Assets\Player\makeBlock.cs" />
-     <Compile Include="Assets\Shader\CameraEffect.cs" />
      <Compile Include="Assets\StartMenu\PlayButton.cs" />
      <Compile Include="Assets\StartMenu\StartMenuManager.cs" />
-     <None Include="Assets\Shader\VHSShader(NOTMINE).shader" />
-     <None Include="Assets\Shader\RippleEffect.shader" />
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

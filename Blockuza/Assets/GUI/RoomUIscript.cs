@@ -19,7 +19,7 @@ public class RoomUIscript : MonoBehaviour {
 		Room.SetActive(false);
 		Player.SetActive(false);
 		string msg = "Room " + level + "-" + room;
-		//txt.text = msg;
+		txt.text = msg;
 	}
 
 	void Update()

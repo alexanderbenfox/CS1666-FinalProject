@@ -21,19 +21,19 @@ public class roomGeneration : MonoBehaviour {
 
 	//public int numPuzzles; //number of puzzles in the room
 
-	private float cellSize = 6.4f; // 10 blocks x .32 wide
+	private float cellSize = 6.4f; // 20 blocks x .32 wide
 	private GameObject[] puzzBlox;
 	private System.Random randomSeed = new System.Random();
 	private float offset;
 	public GameObject roomUI;
-	//private GameObject roomUI;
 	//private int numEnemies;
 
 	// Use this for initialization
 
 	void OnEnable()
 	{
-		backgroundObjects.placeWallPapers ();
+		//backgroundObjects.placeWallPapers ();
+		Debug.Log(roomNumber);
 		if (roomNumber == 0)
 		{
 			roomNumber++;
@@ -42,8 +42,9 @@ public class roomGeneration : MonoBehaviour {
 		else
 		{
 			GenerateRoom(Level);
+			backgroundObjects.placeWallPapers();
 		}
-		GenerateRoom(Level);
+		//GenerateRoom(Level);
 	}
 	// Pick where the puzzle is in the room, place sections before and after it
 	public void GenerateRoom(int level) 
@@ -79,8 +80,8 @@ public class roomGeneration : MonoBehaviour {
 
 		//calculate remaining sections and place remaining sections
 		int sectionsLeft = sectionsWide - puzzlePlace;
-		placeSections(sectionsLeft, level, (puzzlePlace+1));
-		//roomUI.SetActive(false);
+		placeSections(sectionsLeft, level, (puzzlePlace + 1));
+
 		return;
 	}
 
@@ -101,7 +102,7 @@ public class roomGeneration : MonoBehaviour {
 
 			if ((level % 2) == 0) //first section needs force flipped
 				current.transform.localScale = new Vector2(current.transform.localScale.x * -1f, current.transform.localScale.y);
-			
+
 			//Block placement logic
 			int blocksInSection = randomSeed.Next(1, 2);
 			for (int j = 0; j < blocksInSection; j++)
@@ -120,7 +121,7 @@ public class roomGeneration : MonoBehaviour {
 					rand = randomSeed.Next(1, 11);
 					if (rand < 6 && currentBlock < numBlox) //place a block required by the puzzle
 					{
-						placer.Place(puzzBlox[currentBlock], offset,level);
+						placer.Place(puzzBlox[currentBlock], offset, level);
 						currentBlock++;
 					}
 					else //choose a random block
@@ -135,7 +136,7 @@ public class roomGeneration : MonoBehaviour {
 			int enemiesInSection = randomSeed.Next(0, 3);
 			for (int j = 0; j < enemiesInSection; j++)
 			{
-				placer.Place(enemyPrefab, offset,level);
+				placer.Place(enemyPrefab, offset, level);
 			}
 
 			//place map trigger under section
@@ -186,7 +187,7 @@ public class roomGeneration : MonoBehaviour {
 		}
 
 		roomUI.SetActive(true);
-		Debug.Log("UI active?"+roomUI.activeInHierarchy);
+		Debug.Log("UI active?" + roomUI.activeInHierarchy);
 	}
 
 }

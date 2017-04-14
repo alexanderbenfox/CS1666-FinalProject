@@ -49,7 +49,7 @@ public class BackgroundObjects : MonoBehaviour {
 		for (int x = 0; x < roomSize.x; x+=incrementValue) {
 			for (int y = 0; y < roomSize.y; y+=incrementValue) {
 				float useY = (float)y;
-				int randIndex = Random.Range (0, objects.Length - 1);
+				int randIndex = Random.Range (0, objects.Length);
 				Sprite obj = objects [randIndex];
 				SpriteRenderer renderer = blankPrefab.GetComponent<SpriteRenderer> ();
 				renderer.sprite = obj;
@@ -63,6 +63,9 @@ public class BackgroundObjects : MonoBehaviour {
 							grounded = false;
 						}
 						if (height >= .64f) {
+							useY -= .5f;
+						}
+						if (height >= .96f) {
 							useY -= .5f;
 						}
 					}

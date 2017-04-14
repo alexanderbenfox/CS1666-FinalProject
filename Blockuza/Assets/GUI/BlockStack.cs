@@ -10,7 +10,7 @@ public class BlockStack : MonoBehaviour {
 
 	public Image block1,block2,block3;
 
-	public Sprite whiteBlock, orangeBlock;
+	public Sprite whiteBlock, orangeBlock, cyanBlock;
 
 	private Color slideColor, stickyColor;
 

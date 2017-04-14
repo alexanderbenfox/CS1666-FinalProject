@@ -30,6 +30,12 @@ public class BossBlockTiled : MonoBehaviour {
 		block128 = references.GetComponent<BossBlockReferences>().boss128;
 		physics = gameObject.GetComponent<PhysicsObject> ();
 		snap = gameObject.GetComponent<SnapToGrid> ();
+		if (size == 64) {
+			bossFrameTime = .3f;
+		}
+		if (size == 128) {
+			bossFrameTime = .4f;
+		}
 	}
 	void OnTriggerEnter2D(Collider2D col){
 		if (col.tag == "Boss32" && size==32) {

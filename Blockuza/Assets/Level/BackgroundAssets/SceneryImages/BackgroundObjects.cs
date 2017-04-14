@@ -62,6 +62,9 @@ public class BackgroundObjects : MonoBehaviour {
 						if (!checkForGround (new Vector2 ((float)x * .32f + .05f, (float)(y - (height / .32f) - .18f) * .32f - .05f))) {
 							grounded = false;
 						}
+						if (checkForGround (new Vector2 ((float)x * .32f + .05f, (float)((y - .18f) * .32f - .05f)))) {
+							grounded = false;
+						}
 						if (height >= .64f) {
 							useY -= .5f;
 						}

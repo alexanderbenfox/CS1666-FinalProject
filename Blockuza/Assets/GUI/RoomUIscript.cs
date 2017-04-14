@@ -8,6 +8,7 @@ public class RoomUIscript : MonoBehaviour {
 	private GameObject Player;
 	private GameObject UI;
 	public Text txt;
+	public float sec;
 
 	void OnEnable()
 	{	
@@ -20,6 +21,7 @@ public class RoomUIscript : MonoBehaviour {
 		Player.SetActive(false);
 		string msg = "Room " + level + "-" + room;
 		txt.text = msg;
+		StartCoroutine(LateCall());
 	}
 
 	void Update()
@@ -30,6 +32,16 @@ public class RoomUIscript : MonoBehaviour {
 			Room.SetActive(true);
 			UI.SetActive(false);
 		}
+	}
+
+	IEnumerator LateCall()
+	{
+
+		yield return new WaitForSeconds(sec);
+		Player.SetActive(true);
+		Room.SetActive(true);
+		UI.SetActive(false);
+
 	}
 
 }

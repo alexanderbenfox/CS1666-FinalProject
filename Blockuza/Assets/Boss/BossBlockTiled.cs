@@ -20,11 +20,13 @@ public class BossBlockTiled : MonoBehaviour {
 	private float bossFrameTime=.2f;
 	public bool gravity = false;
 	public bool meCreate=true;
+	private BossBlockReferences reference;
 	public int state;//Assuming clockwise motion, 1 is moving right, on top of a block, 2 is moving down the right side of a block, 3 is moving left under a block, and 4 is moving up the left side of a block
 	// Use this for initialization
 	void Start () {
 		state = 1;
 		references = GameObject.Find("BossBlockReferences");
+		reference = references.GetComponent<BossBlockReferences> ();
 		block32 = references.GetComponent<BossBlockReferences>().boss32;
 		block64 = references.GetComponent<BossBlockReferences>().boss64;
 		block128 = references.GetComponent<BossBlockReferences>().boss128;
@@ -38,36 +40,95 @@ public class BossBlockTiled : MonoBehaviour {
 		}
 	}
 	void OnTriggerEnter2D(Collider2D col){
-		if (col.tag == "Boss32" && size==32) {
+		if (col.tag == "Boss32" && size==32 && !reference.destroying) {
 			Debug.Log ("Boss collide");
 			if (meCreate) {
 				Vector3 myPosition = gameObject.transform.position;
 				col.GetComponent<BossBlockTiled> ().meCreate = false;
 				references.GetComponent<BossBlockReferences> ().beingCreated = true;
+				if (myPosition.x > 2.72f) {
+					myPosition.x = 2.72f;
+				}
+				if (myPosition.x < -1.76) {
+					myPosition.x = -1.76f;
+				}
+				if (myPosition.y > 2.4f) {
+					myPosition.y = 2.4f;
+				}
+				if (myPosition.y < -.8f) {
+					myPosition.y = -.8f;
+				}
 				GameObject newBlock = Instantiate (block64, myPosition, Quaternion.identity);
+				reference.boss64Count = reference.boss64Count + 1;
+				reference.boss32Count = reference.boss32Count - 2;
 			}
 			Destroy (gameObject);
 		}
-		if (col.tag == "Boss64" && size==64) {
+		if (col.tag == "Boss64" && size==64 && !reference.destroying) {
 			Debug.Log ("Boss collide");
 			if (meCreate) {
 				Vector3 myPosition = gameObject.transform.position;
 				col.GetComponent<BossBlockTiled> ().meCreate = false;
 				references.GetComponent<BossBlockReferences> ().beingCreated = true;
+				if (myPosition.x > 2.56f) {
+					myPosition.x = 2.56f;
+				}
+				if (myPosition.x < -1.6f) {
+					myPosition.x = -1.6f;
+				}
+				if (myPosition.y > 2.24f) {
+					myPosition.y = 2.24f;
+				}
+				if (myPosition.y < -.64f) {
+					myPosition.y = -.64f;
+				}
 				GameObject newBlock = Instantiate (block128, myPosition, Quaternion.identity);
+				reference.boss64Count = reference.boss64Count - 2;
 			}
 			Destroy (gameObject);
 		}
-		if (col.tag == "Block" && size==64) {
+		if (col.tag == "PlayerBlock" && size==64 && reference.destroying) {
+			col.tag = "Untagged";
 			Vector3 myPosition = gameObject.transform.position;
+			if (myPosition.x > 2.88f) {
+				myPosition.x = 2.88f;
+			}
+			if (myPosition.x < -1.28f) {
+				myPosition.x = -1.28f;
+			}
+			if (myPosition.y > 2.56f) {
+				myPosition.y = 2.56f;
+			}
+			if (myPosition.y < -.96f) {
+				myPosition.y = -.96f;
+			}
 			GameObject newBlock = Instantiate (block32, myPosition, Quaternion.identity);
 			GameObject newBlock2 = Instantiate (block32, new Vector3(myPosition.x-.64f,myPosition.y,0), Quaternion.identity);
+			reference.boss32Count = reference.boss32Count + 2;
+			reference.boss64Count = reference.boss64Count - 1;
 			Destroy (gameObject);
 		}
-		if (col.tag == "Block" && size==128) {
-			Vector3 myPosition = gameObject.transform.position;
-			GameObject newBlock = Instantiate (block64, myPosition, Quaternion.identity);
-			GameObject newBlock2 = Instantiate (block64, new Vector3(myPosition.x-1.28f,myPosition.y,0), Quaternion.identity);
+		if (col.tag == "PlayerBlock" && size==128) {
+			col.tag = "Untagged";
+			reference.bossLivesLeft = reference.bossLivesLeft - 1;
+			if (reference.bossLivesLeft != 0) {
+				Vector3 myPosition = gameObject.transform.position;
+				if (myPosition.x > 2.56f) {
+					myPosition.x = 2.56f;
+				}
+				if (myPosition.x < -.32f) {
+					myPosition.x = -.32f;
+				}
+				if (myPosition.y > 2.24f) {
+					myPosition.y = 2.24f;
+				}
+				if (myPosition.y < -.64f) {
+					myPosition.y = -.64f;
+				}
+				GameObject newBlock = Instantiate (block64, myPosition, Quaternion.identity);
+				GameObject newBlock2 = Instantiate (block64, new Vector3 (myPosition.x - 1.28f, myPosition.y, 0), Quaternion.identity);
+				reference.boss64Count = reference.boss64Count + 2;
+			}
 			Destroy (gameObject);
 		}
 	}
@@ -84,14 +145,20 @@ public class BossBlockTiled : MonoBehaviour {
 						if (physics.checkLeftCollision ()) {
 							waitingLeft = false;
 						}
-					} else if (physics.checkRightCollision ()) {
+					} else if (physics.checkRightCollision ()&& !physics.checkTopCollision()) {
 						state = 4;
 						waitFrame = false;
 						gameObject.transform.position = new Vector3 (gameObject.transform.position.x, gameObject.transform.position.y + .32f, 0);
 						if (physics.checkRightCollision ()) {
 							waitingRight = false;
 						}
-					} else if (waitFrame) {
+					}else if(physics.checkRightCollision ()&& physics.checkTopCollision()){
+						state = 3;
+						gameObject.transform.position = new Vector3 (gameObject.transform.position.x - .32f, gameObject.transform.position.y, 0);
+						if (physics.checkTopCollision ()) {
+							waitingTop = false;
+						}
+					}else if (waitFrame) {
 						gravity = true;
 						waitFrame = false;
 
@@ -172,13 +239,19 @@ public class BossBlockTiled : MonoBehaviour {
 						if (physics.checkRightCollision ()) {
 							waitingRight = false;
 						}
-					} else if (physics.checkLeftCollision ()) {
+					} else if (physics.checkLeftCollision ()&& !physics.checkGrounded()) {
 						state = 2;
 						gameObject.transform.position = new Vector3 (gameObject.transform.position.x, gameObject.transform.position.y - .32f, 0);
 						if (physics.checkLeftCollision ()) {
 							waitingLeft = false;
 						}
-					} else if (waitFrame) {
+					} else if(physics.checkLeftCollision ()&& !physics.checkGrounded()){
+						state = 1;
+						gameObject.transform.position = new Vector3 (gameObject.transform.position.x + .32f, gameObject.transform.position.y, 0);
+						if (physics.checkGrounded ()) {
+							waitingGrounded = false;
+						}
+					}else if (waitFrame) {
 						gravity = true;
 						waitFrame = false;
 

@@ -48,24 +48,29 @@ public class BackgroundObjects : MonoBehaviour {
 	public void placeObjects(int incrementValue, Vector2 roomSize, float chanceToPlace, Sprite[] objects,int depth, bool needsToBeGrounded = false){
 		for (int x = 0; x < roomSize.x; x+=incrementValue) {
 			for (int y = 0; y < roomSize.y; y+=incrementValue) {
+				float useY = (float)y;
+				int randIndex = Random.Range (0, objects.Length - 1);
+				Sprite obj = objects [randIndex];
+				SpriteRenderer renderer = blankPrefab.GetComponent<SpriteRenderer> ();
+				renderer.sprite = obj;
+				float height = renderer.bounds.size.y;
 				
 				int chance = (int)Random.Range (0, 100);
 				if (chance < chanceToPlace * 100) {
 					bool grounded = true;
 					if (needsToBeGrounded) {
-						if(!checkForGround(new Vector2((float)x * .32f+.05f, (float)(y-1) * .32f -.05f)))
+						if (!checkForGround (new Vector2 ((float)x * .32f + .05f, (float)(y - (height / .32f) - .18f) * .32f - .05f))) {
 							grounded = false;
+						}
+						if (height >= .64f) {
+							useY -= .5f;
+						}
 					}
 					if (grounded) {
-						int randIndex = Random.Range (0, objects.Length - 1);
-						Sprite obj = objects [randIndex];
-						SpriteRenderer renderer = blankPrefab.GetComponent<SpriteRenderer> ();
-						renderer.sprite = obj;
-						float height = renderer.bounds.size.y;
 						float offset = .32f * 2;
 						if ((float)y * .32f + offset < roomSize.y && (float)y * .32f - height + offset > 0) {
 							renderer.sortingOrder = depth;
-							Vector2 pos = new Vector2 ((float)x * .32f, (float)y * .32f);
+							Vector2 pos = new Vector2 ((float)x * .32f, useY * .32f);
 							GameObject n = Instantiate (blankPrefab, pos, Quaternion.identity) as GameObject;
 							n.transform.parent = this.transform;
 						}

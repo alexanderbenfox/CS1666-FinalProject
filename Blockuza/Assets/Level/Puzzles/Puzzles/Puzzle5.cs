@@ -6,7 +6,7 @@ public class Puzzle5 : Puzzle
 {
 	public GameObject TriggerBlocks;
 	public GameObject wall;
-
+	public Transform enemies;
 	// Use this for initialization
 	void Start () 
 	{
@@ -22,8 +22,7 @@ public class Puzzle5 : Puzzle
 			TriggerBlocks.SetActive(false);
 		}
 
-		GameObject[] enemies = GameObject.FindGameObjectsWithTag("Puzzle");
-		if (enemies.Length == 0)
+		if (enemies.childCount == 0 && wall.activeInHierarchy)
 		{
 			wall.SetActive(false);
 		}

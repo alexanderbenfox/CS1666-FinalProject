@@ -49,12 +49,21 @@ public class roomGeneration : MonoBehaviour {
 	// Pick where the puzzle is in the room, place sections before and after it
 	public void GenerateRoom(int level) 
 	{
-		Debug.Log("Generating");
-		//numEnemies = randomSeed.Next(1, sectionsWide);
-		offset = 0f;
+		//Decide what offset should be depending on level
+		if (level % 2 == 0) //evens generate right to left
+		{
+			offset = (float)sectionsWide * cellSize;
+			Debug.Log("Offset: "+offset);
+			mainChar.transform.position = new Vector2(offset, 0.64f);//place character back at start of room
+		}
+		else //odd generates left to right
+		{
+			offset = 0f;
+			mainChar.transform.position = new Vector2(0f, 0.64f);//place character back at start of room
+		}
 
-		int puzzlePlace = randomSeed.Next(1, sectionsWide); //choose where puzzle will be in relation to the room
-
+		int puzzlePlace = randomSeed.Next(1, sectionsWide-1); //choose where puzzle will be in relation to the room
+		Debug.Log(puzzlePlace);
 		//get the puzzle for the room and blocks needed to complete
 		int rand = randomSeed.Next(0, puzzlePrefabs.Length);
 		GameObject puzzle = puzzlePrefabs[rand];
@@ -66,12 +75,14 @@ public class roomGeneration : MonoBehaviour {
 		GameObject o = Instantiate(puzzle, new Vector2(offset, 0), Quaternion.identity);
 		o.transform.parent = this.transform;
 		//Put map trigger under
-		Instantiate(mapTrigger, new Vector2(offset, 0), Quaternion.identity).transform.parent = this.transform;
+		GameObject trigg = Instantiate(mapTrigger, new Vector2(offset, 0), Quaternion.identity);
+		trigg.transform.parent = gameObject.transform;
 		//increment offset
 		if ((level % 2) == 0)
 		{
 			offset -= cellSize;
 			o.transform.localScale = new Vector2(o.transform.localScale.x * -1, o.transform.localScale.y);
+			trigg.transform.localScale = new Vector2(trigg.transform.localScale.x * -1, trigg.transform.localScale.y);
 		}
 		else
 		{
@@ -79,12 +90,17 @@ public class roomGeneration : MonoBehaviour {
 		}
 
 		//calculate remaining sections and place remaining sections
-		int sectionsLeft = sectionsWide - puzzlePlace;
+		int sectionsLeft = sectionsWide - puzzlePlace - 1;
 		placeSections(sectionsLeft, level, (puzzlePlace + 1));
 
 		return;
 	}
 
+	/*
+	 * @param number The number of sections to place
+	 * @param level The current level
+	 * @param roomPlace The section number the generating begins
+	 */
 	void placeSections(int number, int level, int roomPlace)
 	{
 		int currentBlock = 0;
@@ -153,7 +169,7 @@ public class roomGeneration : MonoBehaviour {
 				offset += cellSize;
 			}
 
-			if (i + roomPlace == sectionsWide) //place door if last section in room
+			if (i + roomPlace == sectionsWide-1) //place door if last section in room
 				placer.PlaceDoor(door, level);
 
 			//choose next section to place
@@ -174,7 +190,9 @@ public class roomGeneration : MonoBehaviour {
 		{
 			roomNumber++;
 		}
-		mainChar.transform.position = new Vector2(0f, 0.64f);//place character back at start of room
+		//clear positions array on player
+		TimeStuff t = mainChar.GetComponent<TimeStuff>();
+		t.positions = new ArrayList(t.STACK_MAX_SIZE);
 
 		// Deletes room
 		foreach (Transform child in this.transform)

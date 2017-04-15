@@ -18,9 +18,4 @@ public class MapTrigger : MonoBehaviour {
 		}
 	}
 
-	//IEnumerator timer()
-	//{
-		//yield return new WaitForSeconds(sec);
-		//Destroy(instance);
-	//}
 }

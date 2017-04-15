@@ -27,7 +27,7 @@ public class BackgroundObjects : MonoBehaviour {
 
 
 	void Awake(){
-		totalRoomSize = (generator.sectionsWide+1) * 20;
+		totalRoomSize = (generator.sectionsWide) * 20;
 	}
 
 	public void placeWallPapers(){

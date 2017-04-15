@@ -7,7 +7,7 @@ public class TimeStuff : MonoBehaviour
 	public Controller controller;
 	public int STACK_MAX_SIZE;
 	public int HIT_PENALTY; //In seconds
-	private ArrayList positions;
+	public ArrayList positions;
 	private float runningTime;
 
 	public float invulnerableTime = 0;

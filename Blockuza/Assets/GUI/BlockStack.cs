@@ -10,7 +10,7 @@ public class BlockStack : MonoBehaviour {
 
 	public Image block1,block2,block3;
 
-	public Sprite whiteBlock, orangeBlock, cyanBlock;
+	public Sprite blankBlock, stickyBlock, fallingBlock, slidingBlock;
 
 	private Color slideColor, stickyColor;
 
@@ -38,14 +38,14 @@ public class BlockStack : MonoBehaviour {
 			Color color = Color.white;
 			switch (b [i]) {
 			case (BlockType.Destroyable):
-				showSprite = orangeBlock;
+				showSprite = fallingBlock;
 				break;
 			case(BlockType.Sliding):
-				showSprite = whiteBlock;
-				color = slideColor;
+				showSprite = slidingBlock;
+				//color = slideColor;
 				break;
 			case(BlockType.Sticky):
-				showSprite = whiteBlock;
+				showSprite = stickyBlock;
 				color = stickyColor;
 				break;
 			default:

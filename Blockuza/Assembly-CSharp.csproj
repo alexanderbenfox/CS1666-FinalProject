@@ -64,6 +64,7 @@
      <Compile Include="Assets\Level\Puzzles\Puzzle.cs" />
      <Compile Include="Assets\Level\Puzzles\PuzzleTriggerScript.cs" />
      <Compile Include="Assets\Level\Puzzles\Puzzles\Puzzle2.cs" />
+     <Compile Include="Assets\Level\Puzzles\Puzzles\Puzzle2Trigger.cs" />
      <Compile Include="Assets\Level\Puzzles\Puzzles\Puzzle4.cs" />
      <Compile Include="Assets\Level\Puzzles\Puzzles\Puzzle5.cs" />
      <Compile Include="Assets\Level\Puzzles\Puzzles\RightWallTrigger.cs" />

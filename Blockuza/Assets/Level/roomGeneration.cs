@@ -25,19 +25,19 @@ public class roomGeneration : MonoBehaviour {
 	private GameObject[] puzzBlox;
 	private System.Random randomSeed = new System.Random();
 	private float offset;
-	public GameObject roomUI;
+	public GameObject LevelOneUI;
+	public GameObject LevelTwoUI;
+	public GameObject LevelThreeUI;
 	//private int numEnemies;
 
 	// Use this for initialization
 
 	void OnEnable()
 	{
-		//backgroundObjects.placeWallPapers ();
-		Debug.Log(roomNumber);
 		if (roomNumber == 0)
 		{
 			roomNumber++;
-			roomUI.SetActive(true);
+			LevelOneUI.SetActive(true);
 		}
 		else
 		{
@@ -45,7 +45,6 @@ public class roomGeneration : MonoBehaviour {
 			GenerateRoom(Level);
 			backgroundObjects.placeWallPapers();
 		}
-		//GenerateRoom(Level);
 	}
 	// Pick where the puzzle is in the room, place sections before and after it
 	public void GenerateRoom(int level) 
@@ -187,8 +186,18 @@ public class roomGeneration : MonoBehaviour {
 			Destroy(child.gameObject);
 		}
 
-		roomUI.SetActive(true);
-		Debug.Log("UI active?" + roomUI.activeInHierarchy);
+		if (Level == 1)
+		{ 
+			LevelOneUI.SetActive(true);
+		}
+		if (Level == 2)
+		{
+			LevelTwoUI.SetActive(true);
+		}
+		if (Level == 3)
+		{
+			LevelThreeUI.SetActive(true);
+		}
 	}
 
 }

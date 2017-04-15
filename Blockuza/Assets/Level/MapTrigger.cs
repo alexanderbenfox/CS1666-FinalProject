@@ -12,7 +12,6 @@ public class MapTrigger : MonoBehaviour {
 	{
 		if (col.tag == "Player")
 		{
-			Debug.Log("Door hit");
 			col.transform.position = new Vector2(0, 0.64f);
 			instance = Instantiate(UI, new Vector2(0, 0), Quaternion.identity);
 			StartCoroutine(timer());
@@ -21,9 +20,7 @@ public class MapTrigger : MonoBehaviour {
 
 	IEnumerator timer()
 	{
-
 		yield return new WaitForSeconds(sec);
 		Destroy(instance);
-
 	}
 }

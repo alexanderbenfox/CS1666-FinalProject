@@ -2,14 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Puzzle4 : Puzzle 
-{
-	public GameObject TriggerBlocks;
+public class Puzzle3 : MonoBehaviour {
 	public Transform Enemies;
 	// Use this for initialization
-	void Start () 
-	{
-		TriggerBlocks.SetActive(false);	
+	void Start () {
 		if (gameObject.transform.localScale.x == -1f)
 		{
 			foreach (Transform child in Enemies)
@@ -18,17 +14,5 @@ public class Puzzle4 : Puzzle
 			}
 		}
 	}
-	
-	// Update is called once per frame
-	void Update () 
-	{
-		if (Triggered)
-		{
-			TriggerBlocks.SetActive(true);
-		}
-		else
-		{
-			TriggerBlocks.SetActive(false);
-		}
-	}
+
 }

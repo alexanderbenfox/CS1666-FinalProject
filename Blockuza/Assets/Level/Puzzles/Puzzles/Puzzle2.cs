@@ -18,6 +18,14 @@ public class Puzzle2 : Puzzle {
 		if (Triggered)
 		{
 			Enemies.SetActive(true);
+			if (gameObject.transform.localScale.x == -1f)
+			{
+				foreach (Transform child in Enemies.transform)
+				{
+					child.localScale = new Vector2(-1f, child.localScale.y);
+				}
+			}
+
 		}
 		else
 		{

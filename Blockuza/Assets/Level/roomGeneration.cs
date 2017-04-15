@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using System;
 
 public class roomGeneration : MonoBehaviour {
@@ -183,8 +184,15 @@ public class roomGeneration : MonoBehaviour {
 	{
 		if (roomNumber == 3)
 		{
-			roomNumber = 1;
-			Level++;
+			if (Level == 3)
+			{
+				SceneManager.LoadScene("BossTest");
+			}
+			else 
+			{ 
+				roomNumber = 1;
+				Level++;
+			}
 		}
 		else
 		{

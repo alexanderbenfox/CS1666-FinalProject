@@ -10,8 +10,6 @@ public class Puzzle2Trigger : MonoBehaviour {
 		if (col.transform.tag == "Player")
 		{
 			thisPuzzle.Triggered = true;
-			Debug.Log(col.transform.tag);
-			Debug.Log("Triggered");
 		}
 
 	}

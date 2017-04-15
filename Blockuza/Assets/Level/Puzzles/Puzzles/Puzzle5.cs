@@ -12,6 +12,14 @@ public class Puzzle5 : Puzzle
 	{
 		TriggerBlocks.SetActive(true);
 		wall.SetActive(true);
+
+		if (gameObject.transform.localScale.x == -1f)
+		{
+			foreach (Transform child in enemies.transform)
+			{
+				child.localScale = new Vector2(-1f, child.localScale.y);
+			}
+		}
 	}
 	
 	// Update is called once per frame

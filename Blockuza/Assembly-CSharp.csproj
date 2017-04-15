@@ -57,6 +57,7 @@
      <Compile Include="Assets\GUI\BlockStack.cs" />
      <Compile Include="Assets\GUI\OffMapUI.cs" />
      <Compile Include="Assets\GUI\RoomUIscript.cs" />
+     <Compile Include="Assets\GUI\Static Stuff\StaticScript.cs" />
      <Compile Include="Assets\Level\BackgroundAssets\BackgroundImages\BackgroundContianer.cs" />
      <Compile Include="Assets\Level\BackgroundAssets\SceneryImages\BackgroundObjects.cs" />
      <Compile Include="Assets\Level\DoorScript.cs" />
@@ -83,6 +84,7 @@
      <Compile Include="Assets\Player\makeBlock.cs" />
      <Compile Include="Assets\StartMenu\PlayButton.cs" />
      <Compile Include="Assets\StartMenu\StartMenuManager.cs" />
+     <None Include="Assets\GUI\Static Stuff\GreyScaleShader.shader" />
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

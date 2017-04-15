@@ -8,6 +8,7 @@ public class TimeStuff : MonoBehaviour
 	public int STACK_MAX_SIZE;
 	public int HIT_PENALTY; //In seconds
 	public ArrayList positions;
+	public GameObject StaticEffect;
 	private float runningTime;
 
 	public float invulnerableTime = 0;
@@ -79,6 +80,7 @@ public class TimeStuff : MonoBehaviour
 	}
 
 	IEnumerator goThroughAllPoints(){
+		StaticEffect.SetActive(true);
 		lockAction = true;
 		for (int i = positions.Count-1; i >= 0; i--) {
 			this.gameObject.transform.position = (Vector3)positions [i];
@@ -87,6 +89,6 @@ public class TimeStuff : MonoBehaviour
 		lockAction = false;
 		goThruPoints = goThroughAllPoints ();
 		invulnerableTime = (float)HIT_PENALTY/2;
-
+		StaticEffect.SetActive(false);
 	}
 }

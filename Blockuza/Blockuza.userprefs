@@ -1,14 +1,12 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Level/BackgroundAssets/SceneryImages/BackgroundObjects.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/GUI/Static Stuff/GreyScaleShader.shader">
     <Files>
-      <File FileName="Assets/Level/MapTrigger.cs" Line="23" Column="5" />
-      <File FileName="Assets/GUI/RoomUIscript.cs" Line="32" Column="49" />
-      <File FileName="Assets/Level/Puzzles/Puzzles/Puzzle5.cs" Line="24" Column="3" />
-      <File FileName="Assets/Level/roomGeneration.cs" Line="85" Column="110" />
-      <File FileName="Assets/Level/Puzzles/Puzzles/Puzzle2Trigger.cs" Line="17" Column="3" />
-      <File FileName="Assets/GUI/OffMapUI.cs" Line="16" Column="21" />
-      <File FileName="Assets/Player/TimeStuff.cs" Line="1" Column="1" />
-      <File FileName="Assets/Level/BackgroundAssets/SceneryImages/BackgroundObjects.cs" Line="1" Column="1" />
+      <File FileName="Assets/Player/TimeStuff.cs" Line="92" Column="33" />
+      <File FileName="Assets/GUI/Static Stuff/StaticScript.cs" Line="21" Column="31" />
+      <File FileName="Assets/GUI/RoomUIscript.cs" Line="4" Column="18" />
+      <File FileName="Assets/Level/roomGeneration.cs" Line="195" Column="49" />
+      <File FileName="Temp/ParsedCombinations-Standard.shader" Line="1" Column="1" />
+      <File FileName="Assets/GUI/Static Stuff/GreyScaleShader.shader" Line="43" Column="3" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

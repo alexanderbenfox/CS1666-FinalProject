@@ -68,6 +68,8 @@ public class PhysicsObject : MonoBehaviour {
 
 	public LayerMask collidableLayer;
 
+	public bool stopped = false;
+
 	private Side getCollisionSide(Box other){
 		float overlapRight, overlapLeft, overlapBottom, overlapTop;
 		overlapRight = box.right - other.left;
@@ -297,30 +299,35 @@ public class PhysicsObject : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-		box = new Box (col);
-		_grounded = false; _left = false; _right = false; _top = false;
-		List<collision> frameCollisions = getCollisionSides ();
-		for(int i = 0; i < frameCollisions.Count; i++){
-			handleCollision (frameCollisions [i].side, frameCollisions [i].box);
-		}
+		if (!stopped) {
+			box = new Box (col);
+			_grounded = false;
+			_left = false;
+			_right = false;
+			_top = false;
+			List<collision> frameCollisions = getCollisionSides ();
+			for (int i = 0; i < frameCollisions.Count; i++) {
+				handleCollision (frameCollisions [i].side, frameCollisions [i].box);
+			}
 
-		if (!effectedByGravity) {
-			_dy = 0;
-		}
-		/*if (!_collisionThisFrame && !_collisionLastFrame) 
+			if (!effectedByGravity) {
+				_dy = 0;
+			}
+			/*if (!_collisionThisFrame && !_collisionLastFrame) 
 			_grounded = false; _left = false; _right = false; _top = false;*/
 		
-		float x = trans.position.x;
-		float y = trans.position.y;
+			float x = trans.position.x;
+			float y = trans.position.y;
 
-		if(!_grounded && effectedByGravity && _dy > -500f)
-			_dy -= (9.8f * Time.deltaTime);
+			if (!_grounded && effectedByGravity && _dy > -500f)
+				_dy -= (9.8f * Time.deltaTime);
 		
-		x += (_dx * Time.deltaTime);
-		y += (_dy * Time.deltaTime);
-		trans.position = new Vector2 (x, y);
-		_collisionLastFrame = _collisionThisFrame;
-		_collisionThisFrame = false;
+			x += (_dx * Time.deltaTime);
+			y += (_dy * Time.deltaTime);
+			trans.position = new Vector2 (x, y);
+			_collisionLastFrame = _collisionThisFrame;
+			_collisionThisFrame = false;
+		}
 	}
 
 	public void Move(float x, float y){

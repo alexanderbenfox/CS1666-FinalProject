@@ -156,9 +156,15 @@ public class roomGeneration : MonoBehaviour {
 				placer.Place(enemyPrefab, offset, level);
 			}
 
-			//place map trigger under section
-			Instantiate(mapTrigger, new Vector2(offset, 0), Quaternion.identity).transform.parent = this.transform;
 
+			//Put map trigger under
+			GameObject trigg = Instantiate(mapTrigger, new Vector2(offset, 0), Quaternion.identity);
+			trigg.transform.parent = gameObject.transform;
+			//increment offset
+			if ((level % 2) == 0)
+			{
+				trigg.transform.localScale = new Vector2(trigg.transform.localScale.x * -1, trigg.transform.localScale.y);
+			}
 
 			//increment offset based on level
 			if ((level % 2) == 0)

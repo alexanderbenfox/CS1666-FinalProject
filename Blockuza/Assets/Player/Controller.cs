@@ -15,7 +15,8 @@ public enum Direction
 public class Controller : MonoBehaviour
 {
 	public Direction lastDirection = Direction.RIGHT; //used in destroyable block placement
-
+	public AudioSource Source;
+	public AudioClip jumpSound;
 	private PhysicsObject physics;
 	public Animator anim;
 	private SpriteRenderer sprite;
@@ -189,9 +190,10 @@ public class Controller : MonoBehaviour
 			lastDirection = Direction.RIGHT;
 			moving = true;
 		}
-		if (input.keysPressed.Contains(Keys.JUMP) && physics.checkGrounded())
+		if (input.keysPressed.Contains (Keys.JUMP) && physics.checkGrounded ()) {
 			y = 5;
-
+			Source.PlayOneShot (jumpSound);
+		}
 		if (physics.checkGrounded () && !pickingBlock) {
 			if (x == 0)
 				anim.Play ("Idle");

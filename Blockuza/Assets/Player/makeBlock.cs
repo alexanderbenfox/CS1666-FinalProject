@@ -7,6 +7,10 @@ public class makeBlock : MonoBehaviour {
 	public Controller controller;
 	public Transform PlacedBlocks;
 	private TileSelector selector;
+	public AudioSource Source;
+	public AudioClip Sticky;
+	public AudioClip Sliding;
+	public AudioClip Falling;
 
 	// Use this for initialization
 	void Start(){
@@ -32,13 +36,16 @@ public class makeBlock : MonoBehaviour {
 			GameObject blockInst;
 			if (newBlock == BlockType.Sliding) {
 				blockInst = Instantiate (SlideBlockPrefab, position, gameObject.transform.rotation);
-				blockInst.transform.parent = PlacedBlocks; 
+				blockInst.transform.parent = PlacedBlocks;
+				Source.PlayOneShot (Sliding);
 			}else if (newBlock == BlockType.Sticky) {
 				blockInst = Instantiate (StickyBlockPrefab, position, gameObject.transform.rotation);
 				blockInst.transform.parent = PlacedBlocks;
+				Source.PlayOneShot (Sticky);
 			} else {
 				blockInst = Instantiate (DestroyBlockPrefab, position, gameObject.transform.rotation);
 				blockInst.transform.parent = PlacedBlocks;
+				Source.PlayOneShot (Falling);
 			}
 			blockInst.tag = "PlayerBlock";
 		}

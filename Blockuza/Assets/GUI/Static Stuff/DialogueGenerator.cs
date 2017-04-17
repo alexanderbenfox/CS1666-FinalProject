@@ -11,8 +11,6 @@ public class DialogueGenerator : MonoBehaviour
 	public Text text;
 
 	private List<string> oneLiners;
-	private bool isTyping;
-	private bool cancelTyping;
 	private roomGeneration roomGen;
 	private int oldRoomNum;
 
@@ -27,7 +25,9 @@ public class DialogueGenerator : MonoBehaviour
 			"You dare come into MY realm?!",
 			"Are these the skills of the Space God?",
 			"Stop this insolence at once!",
-			"Damn you, servant of Space."
+			"Damn you, servant of Space.",
+			"You will never end this war of ours!",
+			"One day your God of Space will die."
 		};
 
 		oldRoomNum = 1;

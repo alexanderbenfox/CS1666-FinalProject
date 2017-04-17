@@ -55,6 +55,7 @@
      <Compile Include="Assets\Boss\BossBlockTiled.cs" />
      <Compile Include="Assets\EndCutscene.cs" />
      <Compile Include="Assets\Enemy\EnemyScript.cs" />
+     <Compile Include="Assets\FinalScene.cs" />
      <Compile Include="Assets\GUI\BlockStack.cs" />
      <Compile Include="Assets\GUI\OffMapUI.cs" />
      <Compile Include="Assets\GUI\RoomUIscript.cs" />

@@ -192,7 +192,7 @@ public class roomGeneration : MonoBehaviour {
 		{
 			if (Level == 3)
 			{
-				SceneManager.LoadScene("BossTest");
+				SceneManager.LoadScene("BossCutscene");
 			}
 			else 
 			{ 

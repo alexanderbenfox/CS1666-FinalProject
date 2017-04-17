@@ -53,10 +53,12 @@
      <Compile Include="Assets\Boss\BossBlock.cs" />
      <Compile Include="Assets\Boss\BossBlockReferences.cs" />
      <Compile Include="Assets\Boss\BossBlockTiled.cs" />
+     <Compile Include="Assets\EndCutscene.cs" />
      <Compile Include="Assets\Enemy\EnemyScript.cs" />
      <Compile Include="Assets\GUI\BlockStack.cs" />
      <Compile Include="Assets\GUI\OffMapUI.cs" />
      <Compile Include="Assets\GUI\RoomUIscript.cs" />
+     <Compile Include="Assets\GUI\Static Stuff\DialogueGenerator.cs" />
      <Compile Include="Assets\GUI\Static Stuff\StaticScript.cs" />
      <Compile Include="Assets\Level\BackgroundAssets\BackgroundImages\BackgroundContianer.cs" />
      <Compile Include="Assets\Level\BackgroundAssets\SceneryImages\BackgroundObjects.cs" />

@@ -35,7 +35,7 @@ public class BossBlockTiled : MonoBehaviour {
 		block64 = references.GetComponent<BossBlockReferences>().boss64;
 		block128 = references.GetComponent<BossBlockReferences>().boss128;
 		physics = gameObject.GetComponent<PhysicsObject> ();
-
+		physics.setRestrictionPoints (new Vector2 (-2.24f,-1.28f), new Vector2 (3.2f,2.88f));
 		snap = gameObject.GetComponent<SnapToGrid> ();
 		if (size == 64) {
 			bossFrameTime = .3f;

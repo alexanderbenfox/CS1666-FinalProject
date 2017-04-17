@@ -8,6 +8,7 @@ public class BossBlockTiled : MonoBehaviour {
 	private GameObject block64;
 	private GameObject block128;
 	private PhysicsObject physics;
+	public GameObject Player;
 	public int size;
 	public bool moving;
 	private float waitTime;
@@ -21,9 +22,12 @@ public class BossBlockTiled : MonoBehaviour {
 	public bool gravity = false;
 	public bool meCreate=true;
 	private BossBlockReferences reference;
+	private TimeStuff timeStuff;
 	public int state;//Assuming clockwise motion, 1 is moving right, on top of a block, 2 is moving down the right side of a block, 3 is moving left under a block, and 4 is moving up the left side of a block
 	// Use this for initialization
 	void Start () {
+		Player = GameObject.Find ("Player");
+		timeStuff = Player.GetComponent<TimeStuff> ();
 		state = 1;
 		references = GameObject.Find("BossBlockReferences");
 		reference = references.GetComponent<BossBlockReferences> ();
@@ -31,6 +35,7 @@ public class BossBlockTiled : MonoBehaviour {
 		block64 = references.GetComponent<BossBlockReferences>().boss64;
 		block128 = references.GetComponent<BossBlockReferences>().boss128;
 		physics = gameObject.GetComponent<PhysicsObject> ();
+
 		snap = gameObject.GetComponent<SnapToGrid> ();
 		if (size == 64) {
 			bossFrameTime = .3f;
@@ -134,191 +139,193 @@ public class BossBlockTiled : MonoBehaviour {
 	}
 	// Update is called once per frame
 	void Update () {
-		if (state == 1) {
-			if (!gravity) {
-				if (waitTime > bossFrameTime) {
-					waitTime = 0;
-					if (!physics.checkGrounded () && !waitingGrounded) {
-						waitFrame = false;
-						state = 2;
-						gameObject.transform.position = new Vector3 (gameObject.transform.position.x, gameObject.transform.position.y - .32f, 0);
-						if (physics.checkLeftCollision ()) {
+		if (!timeStuff.lockAction) {
+			if (state == 1) {
+				if (!gravity) {
+					if (waitTime > bossFrameTime) {
+						waitTime = 0;
+						if (!physics.checkGrounded () && !waitingGrounded) {
+							waitFrame = false;
+							state = 2;
+							gameObject.transform.position = new Vector3 (gameObject.transform.position.x, gameObject.transform.position.y - .32f, 0);
+							if (physics.checkLeftCollision ()) {
+								waitingLeft = false;
+							}
+						} else if (physics.checkRightCollision () && !physics.checkTopCollision ()) {
+							state = 4;
+							waitFrame = false;
+							gameObject.transform.position = new Vector3 (gameObject.transform.position.x, gameObject.transform.position.y + .32f, 0);
+							if (physics.checkRightCollision ()) {
+								waitingRight = false;
+							}
+						} else if (physics.checkRightCollision () && physics.checkTopCollision ()) {
+							state = 3;
+							gameObject.transform.position = new Vector3 (gameObject.transform.position.x - .32f, gameObject.transform.position.y, 0);
+							if (physics.checkTopCollision ()) {
+								waitingTop = false;
+							}
+						} else if (waitFrame) {
+							gravity = true;
+							waitFrame = false;
+
+						} else {
+							gameObject.transform.position = new Vector3 (gameObject.transform.position.x + .32f, gameObject.transform.position.y, 0);
+						}
+						if (state == 1 && physics.checkGrounded ()) {
+							waitingGrounded = false;
+						} else if (state == 1) {
+							waitFrame = true;
+						} else {
+							waitingGrounded = true;
+						}
+
+
+					}
+				} else {
+					physics.effectedByGravity = true;
+					snap.enabled = false;
+					if (physics.checkGrounded ()) {
+						physics.effectedByGravity = false;
+						snap.enabled = true;
+						gravity = false;
+					}
+				}
+
+			}
+			if (state == 2) {
+				if (!gravity) {
+					if (waitTime > bossFrameTime) {
+						waitTime = 0;
+						if (!physics.checkLeftCollision () && !waitingLeft) {
+							state = 3;
+							gameObject.transform.position = new Vector3 (gameObject.transform.position.x - .32f, gameObject.transform.position.y, 0);
+							if (physics.checkTopCollision ()) {
+								waitingTop = false;
+							}
+						} else if (physics.checkGrounded ()) {
+							state = 1;
+							gameObject.transform.position = new Vector3 (gameObject.transform.position.x + .32f, gameObject.transform.position.y, 0);
+							if (physics.checkGrounded ()) {
+								waitingGrounded = false;
+							}
+						} else if (waitFrame) {
+							gravity = true;
+							waitFrame = false;
+
+						} else {
+							gameObject.transform.position = new Vector3 (gameObject.transform.position.x, gameObject.transform.position.y - .32f, 0);
+						}
+						if (state == 2 && physics.checkLeftCollision ()) {
 							waitingLeft = false;
+						} else if (state == 2) {
+							waitFrame = true;
+						} else {
+							waitingLeft = true;
 						}
-					} else if (physics.checkRightCollision ()&& !physics.checkTopCollision()) {
-						state = 4;
-						waitFrame = false;
-						gameObject.transform.position = new Vector3 (gameObject.transform.position.x, gameObject.transform.position.y + .32f, 0);
-						if (physics.checkRightCollision ()) {
+					}
+				} else {
+					physics.effectedByGravity = true;
+					snap.enabled = false;
+					if (physics.checkGrounded ()) {
+						physics.effectedByGravity = false;
+						snap.enabled = true;
+						gravity = false;
+						state = 1;
+					}
+				}
+
+			}
+			if (state == 3) {
+				if (!gravity) {
+					if (waitTime > bossFrameTime) {
+						waitTime = 0;
+						if (!physics.checkTopCollision () && !waitingTop) {
+							state = 4;
+							gameObject.transform.position = new Vector3 (gameObject.transform.position.x, gameObject.transform.position.y + .32f, 0);
+							if (physics.checkRightCollision ()) {
+								waitingRight = false;
+							}
+						} else if (physics.checkLeftCollision () && !physics.checkGrounded ()) {
+							state = 2;
+							gameObject.transform.position = new Vector3 (gameObject.transform.position.x, gameObject.transform.position.y - .32f, 0);
+							if (physics.checkLeftCollision ()) {
+								waitingLeft = false;
+							}
+						} else if (physics.checkLeftCollision () && !physics.checkGrounded ()) {
+							state = 1;
+							gameObject.transform.position = new Vector3 (gameObject.transform.position.x + .32f, gameObject.transform.position.y, 0);
+							if (physics.checkGrounded ()) {
+								waitingGrounded = false;
+							}
+						} else if (waitFrame) {
+							gravity = true;
+							waitFrame = false;
+
+						} else {
+							gameObject.transform.position = new Vector3 (gameObject.transform.position.x - .32f, gameObject.transform.position.y, 0);
+						}
+						if (state == 3 && physics.checkTopCollision ()) {
+							waitingTop = false;
+						} else if (state == 3) {
+							waitFrame = true;
+						} else {
+							waitingTop = true;
+						}
+					}
+				} else {
+					physics.effectedByGravity = true;
+					snap.enabled = false;
+					if (physics.checkGrounded ()) {
+						physics.effectedByGravity = false;
+						snap.enabled = true;
+						gravity = false;
+						state = 1;
+					}
+				}
+			}
+			if (state == 4) {
+				if (!gravity) {
+					if (waitTime > bossFrameTime) {
+						waitTime = 0;
+						if (!physics.checkRightCollision () && !waitingRight) {
+							state = 1;
+							gameObject.transform.position = new Vector3 (gameObject.transform.position.x + .32f, gameObject.transform.position.y, 0);
+							if (physics.checkGrounded ()) {
+								waitingGrounded = false;
+							}
+						} else if (physics.checkTopCollision ()) {
+							state = 3;
+							gameObject.transform.position = new Vector3 (gameObject.transform.position.x - .32f, gameObject.transform.position.y, 0);
+							if (physics.checkTopCollision ()) {
+								waitingTop = false;
+							}
+						} else if (waitFrame) {
+							gravity = true;
+							waitFrame = false;
+
+						} else {
+							gameObject.transform.position = new Vector3 (gameObject.transform.position.x, gameObject.transform.position.y + .32f, 0);
+						}
+						if (state == 4 && physics.checkRightCollision ()) {
 							waitingRight = false;
+						} else if (state == 4) {
+							waitFrame = true;
+						} else {
+							waitingRight = true;
 						}
-					}else if(physics.checkRightCollision ()&& physics.checkTopCollision()){
-						state = 3;
-						gameObject.transform.position = new Vector3 (gameObject.transform.position.x - .32f, gameObject.transform.position.y, 0);
-						if (physics.checkTopCollision ()) {
-							waitingTop = false;
-						}
-					}else if (waitFrame) {
-						gravity = true;
-						waitFrame = false;
-
-					} else {
-						gameObject.transform.position = new Vector3 (gameObject.transform.position.x + .32f, gameObject.transform.position.y, 0);
 					}
-					if (state == 1 && physics.checkGrounded ()) {
-						waitingGrounded = false;
-					} else if (state == 1) {
-						waitFrame = true;
-					} else {
-						waitingGrounded = true;
-					}
-
-
-				}
-			} else {
-				physics.effectedByGravity = true;
-				snap.enabled = false;
-				if (physics.checkGrounded()) {
-					physics.effectedByGravity = false;
-					snap.enabled = true;
-					gravity = false;
-				}
-			}
-
-		}
-		if (state == 2) {
-			if (!gravity) {
-				if (waitTime > bossFrameTime) {
-					waitTime = 0;
-					if (!physics.checkLeftCollision () && !waitingLeft) {
-						state = 3;
-						gameObject.transform.position = new Vector3 (gameObject.transform.position.x - .32f, gameObject.transform.position.y, 0);
-						if (physics.checkTopCollision ()) {
-							waitingTop = false;
-						}
-					} else if (physics.checkGrounded ()) {
+				} else {
+					physics.effectedByGravity = true;
+					snap.enabled = false;
+					if (physics.checkGrounded ()) {
+						physics.effectedByGravity = false;
+						snap.enabled = true;
+						gravity = false;
 						state = 1;
-						gameObject.transform.position = new Vector3 (gameObject.transform.position.x + .32f, gameObject.transform.position.y, 0);
-						if (physics.checkGrounded ()) {
-							waitingGrounded = false;
-						}
-					} else if (waitFrame) {
-						gravity = true;
-						waitFrame = false;
-
-					} else {
-						gameObject.transform.position = new Vector3 (gameObject.transform.position.x, gameObject.transform.position.y - .32f, 0);
 					}
-					if (state == 2 && physics.checkLeftCollision ()) {
-						waitingLeft = false;
-					} else if (state == 2) {
-						waitFrame = true;
-					} else {
-						waitingLeft = true;
-					}
-				}
-			} else {
-				physics.effectedByGravity = true;
-				snap.enabled = false;
-				if (physics.checkGrounded()) {
-					physics.effectedByGravity = false;
-					snap.enabled = true;
-					gravity = false;
-					state = 1;
 				}
 			}
-
+			waitTime += Time.deltaTime;
 		}
-		if (state == 3) {
-			if (!gravity) {
-				if (waitTime > bossFrameTime) {
-					waitTime = 0;
-					if (!physics.checkTopCollision () && !waitingTop) {
-						state = 4;
-						gameObject.transform.position = new Vector3 (gameObject.transform.position.x, gameObject.transform.position.y + .32f, 0);
-						if (physics.checkRightCollision ()) {
-							waitingRight = false;
-						}
-					} else if (physics.checkLeftCollision ()&& !physics.checkGrounded()) {
-						state = 2;
-						gameObject.transform.position = new Vector3 (gameObject.transform.position.x, gameObject.transform.position.y - .32f, 0);
-						if (physics.checkLeftCollision ()) {
-							waitingLeft = false;
-						}
-					} else if(physics.checkLeftCollision ()&& !physics.checkGrounded()){
-						state = 1;
-						gameObject.transform.position = new Vector3 (gameObject.transform.position.x + .32f, gameObject.transform.position.y, 0);
-						if (physics.checkGrounded ()) {
-							waitingGrounded = false;
-						}
-					}else if (waitFrame) {
-						gravity = true;
-						waitFrame = false;
-
-					} else {
-						gameObject.transform.position = new Vector3 (gameObject.transform.position.x - .32f, gameObject.transform.position.y, 0);
-					}
-					if (state == 3 && physics.checkTopCollision ()) {
-						waitingTop = false;
-					} else if (state == 3) {
-						waitFrame = true;
-					} else {
-						waitingTop = true;
-					}
-				}
-			}else {
-				physics.effectedByGravity = true;
-				snap.enabled = false;
-				if (physics.checkGrounded()) {
-					physics.effectedByGravity = false;
-					snap.enabled = true;
-					gravity = false;
-					state = 1;
-				}
-			}
-		}
-		if (state == 4) {
-			if (!gravity) {
-				if (waitTime > bossFrameTime) {
-					waitTime = 0;
-					if (!physics.checkRightCollision () && !waitingRight) {
-						state = 1;
-						gameObject.transform.position = new Vector3 (gameObject.transform.position.x + .32f, gameObject.transform.position.y, 0);
-						if (physics.checkGrounded ()) {
-							waitingGrounded = false;
-						}
-					} else if (physics.checkTopCollision ()) {
-						state = 3;
-						gameObject.transform.position = new Vector3 (gameObject.transform.position.x - .32f, gameObject.transform.position.y, 0);
-						if (physics.checkTopCollision ()) {
-							waitingTop = false;
-						}
-					} else if (waitFrame) {
-						gravity = true;
-						waitFrame = false;
-
-					} else {
-						gameObject.transform.position = new Vector3 (gameObject.transform.position.x, gameObject.transform.position.y + .32f, 0);
-					}
-					if (state == 4 && physics.checkRightCollision ()) {
-						waitingRight = false;
-					} else if (state == 4) {
-						waitFrame = true;
-					} else {
-						waitingRight = true;
-					}
-				}
-			}else {
-				physics.effectedByGravity = true;
-				snap.enabled = false;
-				if (physics.checkGrounded()) {
-					physics.effectedByGravity = false;
-					snap.enabled = true;
-					gravity = false;
-					state = 1;
-				}
-			}
-		}
-		waitTime += Time.deltaTime;
 	}
 }

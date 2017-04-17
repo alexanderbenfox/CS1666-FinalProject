@@ -11,7 +11,7 @@ public class BossBlockReferences : MonoBehaviour {
 	public bool beingCreated=false;
 	public int boss32Count=0;
 	public int boss64Count=0;
-	public int bossLivesLeft = 3;
+	public int bossLivesLeft = 2;
 	public bool destroying=true;
 	public bool Victory = false;
 	private bool waitFrame;

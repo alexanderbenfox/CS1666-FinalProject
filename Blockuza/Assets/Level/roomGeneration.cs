@@ -190,7 +190,7 @@ public class roomGeneration : MonoBehaviour {
 	{
 		if (roomNumber == 3 && Level == 3)
 		{
-			SceneManager.LoadScene("BossCutscene");
+			SceneManager.LoadScene(3);
 		}
 		else if (roomNumber == 3)
 		{

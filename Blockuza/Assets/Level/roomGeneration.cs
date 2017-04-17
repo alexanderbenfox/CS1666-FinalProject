@@ -124,7 +124,7 @@ public class roomGeneration : MonoBehaviour {
 			int blocksInSection = randomSeed.Next(1, 2);
 			for (int j = 0; j < blocksInSection; j++)
 			{
-				if (i == number - 1 && currentBlock < numBlox - 1) //last section before puzzle and not all blocks required are placed
+				if (i == (number - 1) && currentBlock < numBlox - 1) //last section before puzzle and not all blocks required are placed
 				{
 					while (currentBlock < numBlox)
 					{

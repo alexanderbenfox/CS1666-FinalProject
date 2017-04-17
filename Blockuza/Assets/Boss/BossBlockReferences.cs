@@ -34,7 +34,7 @@ public class BossBlockReferences : MonoBehaviour {
 		}
 		if (bossLivesLeft == 0) {
 			Victory = true;
-			SceneManager.LoadScene (3);
+			SceneManager.LoadScene (5);
 		}
 	}
 }

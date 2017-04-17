@@ -43,7 +43,7 @@ public class EndCutscene : MonoBehaviour
 	void Update () 
 	{
 		Vector3 screenPoint = Camera.WorldToViewportPoint(Boss.transform.position);
-		bool onScreen = screenPoint.x <= 0.75;
+		bool onScreen = screenPoint.x <= 0.8;
 
 		if (onScreen && !playing) 
 		{

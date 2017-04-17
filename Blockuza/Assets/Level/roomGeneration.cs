@@ -188,22 +188,20 @@ public class roomGeneration : MonoBehaviour {
 
 	public void NextRoom()
 	{
-		if (roomNumber == 3)
+		if (roomNumber == 3 && Level == 3)
 		{
-			if (Level == 3)
-			{
-				SceneManager.LoadScene("BossCutscene");
-			}
-			else 
-			{ 
-				roomNumber = 1;
-				Level++;
-			}
+			SceneManager.LoadScene("BossCutscene");
 		}
-		else
+		else if (roomNumber == 3)
 		{
+			roomNumber = 1;
+			Level++;
+		}
+		else 
+		{ 
 			roomNumber++;
 		}
+
 		//clear positions array on player
 		TimeStuff t = mainChar.GetComponent<TimeStuff>();
 		t.positions = new ArrayList(t.STACK_MAX_SIZE);

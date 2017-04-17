@@ -67,7 +67,7 @@ public class FinalScene : MonoBehaviour {
 		Animator animator = Boss.transform.gameObject.GetComponent<Animator>();
 		animator.Play("Boss-Death");
 
-		StaticEffect.SetActive(true);
+		StartCoroutine(ToggleStatic());
 
 		for (int i = 0; i < deathMonologue2.Count; i++)
 		{
@@ -87,5 +87,16 @@ public class FinalScene : MonoBehaviour {
 		Boss.SetActive(false);
 		DialogueBox.SetActive(false);
 		winText.SetActive(true);
+	}
+
+	private IEnumerator ToggleStatic()
+	{
+		while (true)
+		{
+			StaticEffect.SetActive(false);
+			yield return new WaitForSeconds(1);
+			StaticEffect.SetActive(true);
+			yield return new WaitForSeconds(1);
+		}
 	}
 }

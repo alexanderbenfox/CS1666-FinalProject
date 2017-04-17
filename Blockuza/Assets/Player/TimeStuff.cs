@@ -72,7 +72,7 @@ public class TimeStuff : MonoBehaviour
 
 	void OnTriggerEnter2D(Collider2D col) 
 	{
-		if (col.gameObject.CompareTag("Shuriken"))
+		if (col.gameObject.CompareTag("Shuriken")||col.gameObject.CompareTag("Boss32")||col.gameObject.CompareTag("Boss64")||col.gameObject.CompareTag("Boss96"))
 		{
 			if(invulnerableTime <= 0)
 				StartCoroutine (goThruPoints);

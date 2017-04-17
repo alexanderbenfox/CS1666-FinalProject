@@ -51,6 +51,13 @@ public class PhysicsObject : MonoBehaviour {
 		public Side side;
 	}
 
+	public struct RestrictionPoints
+	{
+		//bottom left, top right
+		public Vector2 point1, point2;
+		public bool active = false;
+	}
+
 	private BoxCollider2D col;
 	[SerializeField]
 	public Box box;
@@ -69,6 +76,37 @@ public class PhysicsObject : MonoBehaviour {
 	public LayerMask collidableLayer;
 
 	public bool stopped = false;
+
+	private RestrictionPoints restrictionPoints;
+
+	public void setRestrictionPoints(Vector2 point1, Vector2 point2){
+		restrictionPoints.point1 = point1;
+		restrictionPoints.point2 = point2;
+		restrictionPoints.active = false;
+	}
+
+	public bool getWithinRestrictionPoints(Vector2 movePoint){
+		if (!restrictionPoints.active) {
+			return true;
+		} else {
+			float x = movePoint.x;
+			float y = movePoint.y;
+			float rX1 = restrictionPoints.point1.x;
+			float rX2 = restrictionPoints.point2.x;
+			float rY1 = restrictionPoints.point1.y;
+			float rY2 = restrictionPoints.point2.y;
+
+			if (x < rX1 && x > rX2) {
+				return false;
+			}
+
+			if (y < rY1 && y > rY2) {
+				return false;
+			}
+
+			return true;
+		}
+	}
 
 	private Side getCollisionSide(Box other){
 		float overlapRight, overlapLeft, overlapBottom, overlapTop;
@@ -324,7 +362,8 @@ public class PhysicsObject : MonoBehaviour {
 		
 			x += (_dx * Time.deltaTime);
 			y += (_dy * Time.deltaTime);
-			trans.position = new Vector2 (x, y);
+			if(getWithinRestrictionPoints(new Vector2(x,y)))
+				trans.position = new Vector2 (x, y);
 			_collisionLastFrame = _collisionThisFrame;
 			_collisionThisFrame = false;
 		}

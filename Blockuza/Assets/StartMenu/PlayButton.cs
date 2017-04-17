@@ -5,6 +5,6 @@ using UnityEngine;
 public class PlayButton : MonoBehaviour {
 
 	public void OnClick(){
-		Application.LoadLevel("RoomGenTest");
+		Application.LoadLevel("Intro");
 	}
 }

@@ -9,6 +9,7 @@ public class FinalScene : MonoBehaviour {
 	public GameObject DialogueBox;
 	public GameObject Boss;
 	public GameObject winText;
+	public GameObject StaticEffect;
 	public Text text;
 
 	private List<string> deathMonologue1;
@@ -66,7 +67,7 @@ public class FinalScene : MonoBehaviour {
 		Animator animator = Boss.transform.gameObject.GetComponent<Animator>();
 		animator.Play("Boss-Death");
 
-		// TODO: static effect
+		StaticEffect.SetActive(true);
 
 		for (int i = 0; i < deathMonologue2.Count; i++)
 		{
